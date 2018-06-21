@@ -7,7 +7,16 @@ import store from '.';
 export function startGame () {
     store.dispatch({
         type: 'GAME_START',
-        gameState: 'play'
+        gameState: 'play',
+        shots: 0,
+        hits: 0
+    });
+}
+
+export function cancelGame () {
+    store.dispatch({
+        type: 'GAME_CANCEL',
+        gameState: 'welcome'
     });
 }
 

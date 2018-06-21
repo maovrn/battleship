@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import store from '../store';
 import * as actions from "../store/actions";
 import './Battleground.css';
-
+import BattlegroundBack from '../components/BattlegroundBack';
 
 class Battleground extends Component {
 
@@ -34,10 +34,11 @@ class Battleground extends Component {
 
         return (
             <div className="Battleground">
-
-                <svg className="grid" onClick={this.click}>
-                    {cells}
-                </svg>
+                <BattlegroundBack cols={10} rows={10}>
+                    <svg className="grid" onClick={this.click}>
+                        {cells}
+                    </svg>
+                </BattlegroundBack>
             </div>
         );
     }

@@ -1,0 +1,46 @@
+.Control {
+    width: 100px;
+    height: 500px;
+    float: right;
+    position: relative;
+    margin: 50px 50px 0 50px;
+    text-align: center;
+    font-family: monospace;
+}
+
+.Control .field {
+    font-family: monospace;
+    height: 50px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.Control .label {
+    color: #2e6da4;
+    font-size: 14px;
+    font-weight: bold;
+    text-shadow: rgba(200, 200, 200, 0.5) 0px 2px 2px;
+}
+
+.Control .value {
+    color: #333;
+    font-size: 18px;
+    font-weight: normal;
+}
+
+.Control .buttons {
+    height: 400px;
+    position: relative;
+}
+
+.Control .buttons .btn {
+    height: 20px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.Control .buttons a {
+    color: #2e6da4;
+    text-decoration: none;
+}

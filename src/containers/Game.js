@@ -10,7 +10,7 @@ import './Game.css';
 
 import Welcome from '../components/Welcome';
 import Battleground from './Battleground';
-import Statistics from './Statistics';
+import Statistics from './Control';
 
 class Game extends Component {
 
