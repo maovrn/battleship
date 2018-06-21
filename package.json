@@ -1,11 +1,16 @@
 {
-  "name": "project",
+  "name": "battleship",
   "version": "0.1.0",
+  "description": "Battle ship test task",
+  "author": "Ilya Grebtsov",
   "private": true,
   "dependencies": {
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
-    "react-scripts": "1.1.4"
+    "react-scripts": "1.1.4",
+    "redux": "^4.0.0",
+    "react-redux": "^5.0.7",
+    "prop-types": "^15.6.2"
   },
   "scripts": {
     "start": "react-scripts start",
