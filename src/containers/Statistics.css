@@ -1,0 +1,13 @@
+.Statistics {
+    width: 100px;
+    float: right;
+    margin: 50px 50px 0 50px;
+    text-align: center;
+}
+
+.Statistics .label {
+    color: #2e6da4;
+    font-family: Georgia, Times, "Times New Roman", serif;
+    font-size: 16px;
+    font-weight: bold;
+}

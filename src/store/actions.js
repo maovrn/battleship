@@ -7,7 +7,15 @@ import store from '.';
 export function startGame () {
     store.dispatch({
         type: 'GAME_START',
-        game_mode: 'start'
+        gameState: 'play'
+    });
+}
+
+export function shoot (x, y) {
+    store.dispatch({
+        type: 'SHOT',
+        x: x,
+        y: y
     });
 }
 

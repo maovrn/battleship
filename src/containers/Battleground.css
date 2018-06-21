@@ -1,0 +1,23 @@
+.Battleground {
+    text-align: left;
+}
+.grid {
+    width: 500px;
+    height: 500px;
+    border: 1px solid green;
+    margin: 50px 0 0 50px;
+}
+.grid .cell {
+    width: 50px;
+    height: 50px;
+    fill: transparent;
+    stroke-width: 1px;
+    stroke: rgb(112, 166, 6);
+    opacity: 0.9;
+    cursor: pointer;
+}
+
+.grid .cell:hover {
+    fill: rgb(50,50,50);
+    opacity: 0.5;
+}
