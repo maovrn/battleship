@@ -1,5 +1,5 @@
 /***********************************************************************************************************************
- * Wrapper component - Background for the battleground.
+ * Wrapper component - Background for the battleground. Create a table to display column and row names.
  *
  * Props must be provided:
  * - cols {Integer} - max x size
@@ -17,19 +17,19 @@ class BattlegroundBack extends Component {
         const rows = utils.generateNumbers(2, this.props.rows);
 
         return (
-            <table className="BattlegroundBack" cols={this.props.cols + 1}>
-                <tr>
+            <table className="BattlegroundBack" cols={this.props.cols + 1}><tbody>
+                <tr key={'row0'}>
                     <td className="header-column"></td>
-                    {columns.map(column => <td className="header-column">{column}</td> )}
+                    {columns.map(column => <td key={'column'+column} className="header-column">{column}</td> )}
                 </tr>
-                <tr>
+                <tr key={'row1'}>
                     <td className="header-row">1</td>
                     <td colSpan={this.props.cols} rowSpan={this.props.rows}>
                         {this.props.children}
                     </td>
                 </tr>
-                {rows.map(row => <tr><td className="header-row">{row}</td></tr>)}
-            </table>
+                {rows.map(row => <tr key={'row'+row}><td className="header-row">{row}</td></tr>)}
+            </tbody></table>
         );
     }
 
