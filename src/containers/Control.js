@@ -23,7 +23,7 @@ class Control extends Component {
                 </div>
                 <div className="buttons">
                     <div className="btn cancel">
-                        <a href="javascript:void(0)" onClick={actions.cancelGame}>Quit the game</a>
+                        <a  onClick={actions.cancelGame}>Quit the game</a>
                     </div>
                 </div>
             </div>
