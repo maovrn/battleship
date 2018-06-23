@@ -1,6 +1,17 @@
+html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
 body {
     margin: 0;
     padding: 0;
+    width: 100%;
+    height: 100%;
     font-family: sans-serif;
-    background: #f0f8ff;
+    background: #88A0BA url(./aurora.jpg);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
 }

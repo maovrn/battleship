@@ -5,7 +5,7 @@
     width: 500px;
     height: 500px;
     border: 1px solid green;
-    background: lightblue;
+    background: #D8F6FF;
 }
 .grid .cell {
     width: 50px;
@@ -19,5 +19,5 @@
 
 .grid .cell:hover {
     fill: rgb(50,50,50);
-    opacity: 0.5;
+    opacity: 0.25;
 }
