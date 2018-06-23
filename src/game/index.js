@@ -36,13 +36,13 @@ export const sign = {
 
 function generateShip(shape) {
     let ship = shape(),
-        variant = utils.getRandomInt(0, ship.variants.length);
+        variant = ship.variants.length >2 ? 3 : utils.getRandomInt(0, ship.variants.length);
     return {
         name:   ship.name || 'Ship',
         decks:  ship.decks || 0,
-        hits:   0,
-        matrix:  ship.variants[ variant ],
-        frame:   ship.frames ? ship.frames[ variant ] : "" //TODO slect frame using variant
+        matrix: ship.variants[ variant ],
+        frame:  ship.frames[ variant ],
+        hits:   0
     }
 }
 
@@ -117,16 +117,21 @@ export function generateBattleMatrixAndShips () {
 }
 
 /**
- * Return a ship object by x,y coordinates on a battle matrix
+ * Return a ship object from ships provided by x,y coordinates on a battle matrix
  * @param ships
  * @param x
  * @param y
  * @returns {Object|null}
  */
 export function findShip (ships, x, y) {
+    // place every ship on zero matrix then check if x,y point a deck
     let bg = matrix.generate(maxX, maxY);
-    return ships.filter(ship => {
+    return ships.find(ship => {
         let bg_test = matrix.apply(bg, ship.matrix, ship.x, ship.y);
         return bg_test[y][x] === sign.deck;
-    })[0] || null;
+    }) || null;
+}
+
+export function checkGameWin (ships) {
+    return !ships.some((ship) => ship.decks > ship.hits);
 }

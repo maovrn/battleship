@@ -9,8 +9,11 @@ import * as actions from "../store/actions";
 import './Game.css';
 
 import Welcome from '../components/Welcome';
+import WinScreen from '../components/WinScreen';
 import Battleground from './Battleground';
 import Statistics from './Control';
+
+import * as game from "../game";
 
 class Game extends Component {
 
@@ -35,16 +38,18 @@ class Game extends Component {
     render() {
         if (this.props.gameState === 'welcome') {
             return (
-                <Welcome onStart={this.onStart} />
+                <Welcome onStart={this.onStart}/>
             )
-        }
-        if (this.props.gameState === 'play') {
+        } else {
             return (
                 <div className="Game">
                     <div className="panels">
                         <Statistics/>
                         <Battleground/>
                     </div>
+                    {this.props.gameState === 'win' &&
+                        <WinScreen onStart={this.onStart} shots={this.props.shots}/>
+                    }
                 </div>
             )
         }
@@ -54,6 +59,7 @@ class Game extends Component {
 
 export default connect(state => {
     return {
-        gameState: state.gameState || 'welcome'
+        gameState: (state.gameState === 'play' && game.checkGameWin(state.ships)) ? 'win' : state.gameState || 'welcome',
+        shots: state.shots
     }
 })(Game);
