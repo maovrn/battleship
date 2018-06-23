@@ -35,6 +35,6 @@ class Control extends Component {
 export default connect(state => {
     return {
         shots: state.shots || 0,
-        hits: state.hits || 0
+        hits:  state.ships.reduce((hits, ship) => {return hits + ship.hits}, 0)
     }
 })(Control);

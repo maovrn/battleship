@@ -22,26 +22,31 @@ export const initialShipCount = [
 
 // codes of ships and statuses in matrix
 export const sign = {
+    /* initial signs */
     empty: 0,
     touch: 1,
     deck:  3,
     /* result of clicks */
-    miss: 5,
-    hit: 7
+    miss:  5,
+    hit:   7
 }
 
 
 /* Battle ships and matrix generation */
 
 function generateShip(shape) {
-    let ship = shape();
+    let ship = shape(),
+        variant = utils.getRandomInt(0, ship.variants.length);
     return {
-        name: ship.name || 'Ship',
-        decks: ship.decks || 0,
-        matrix: ship.variants[ utils.getRandomInt(0, ship.variants.length) ]
+        name:   ship.name || 'Ship',
+        decks:  ship.decks || 0,
+        hits:   0,
+        matrix:  ship.variants[ variant ],
+        frame:   ship.frames ? ship.frames[ variant ] : "" //TODO slect frame using variant
     }
 }
 
+/* Several validation rules to check a ship placement is valid */
 function checkDeckCount (mtrx, ships) {
     let decks = ships.reduce((acc, ship) => {return acc + ship.decks}, 0);
     return matrix.countValues(mtrx, sign.deck) === decks;
@@ -75,6 +80,11 @@ function setShipRandomXY (ship) {
     return ship;
 }
 
+
+/**
+ * Generate initial state of battle
+ * @returns {{matrix: Array, ships: Array}}
+ */
 export function generateBattleMatrixAndShips () {
     let bg = matrix.generate(maxX, maxY),
         ships = [];
@@ -104,4 +114,19 @@ export function generateBattleMatrixAndShips () {
         matrix: bg,
         ships: ships
     }
+}
+
+/**
+ * Return a ship object by x,y coordinates on a battle matrix
+ * @param ships
+ * @param x
+ * @param y
+ * @returns {Object|null}
+ */
+export function findShip (ships, x, y) {
+    let bg = matrix.generate(maxX, maxY);
+    return ships.filter(ship => {
+        let bg_test = matrix.apply(bg, ship.matrix, ship.x, ship.y);
+        return bg_test[y][x] === sign.deck;
+    })[0] || null;
 }

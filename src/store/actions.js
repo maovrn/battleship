@@ -11,9 +11,8 @@ export function startGame () {
         type: 'GAME_START',
         gameState: 'play',
         matrix: battle.matrix,
-        ships: battle.ships,
-        shots: 0,
-        hits:  0
+        ships:  battle.ships,
+        shots:  0
     });
 }
 

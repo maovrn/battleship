@@ -14,6 +14,7 @@ import Statistics from './Control';
 
 class Game extends Component {
 
+    /*
     constructor(props, context) {
         super(props, context);
 
@@ -22,6 +23,7 @@ class Game extends Component {
     componentDidMount() {
 
     }
+    */
 
 
     onStart = () => {

@@ -14,6 +14,7 @@
     stroke-width: 1px;
     stroke: rgb(112, 166, 6);
     cursor: pointer;
+    z-index: 9;
 }
 
 .grid .cell:hover {
@@ -34,4 +35,11 @@
 }
 .grid .cell.hit:hover {
     opacity: 1;
+}
+
+.grid .ship-frame {
+    fill: #ffb2b2;
+    stroke-width: 2px;
+    stroke: red;
+    z-index: 99;
 }
