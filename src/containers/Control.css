@@ -38,9 +38,15 @@
     position: absolute;
     bottom: 0;
     left: 0;
+    padding: 0;
 }
 
-.Control .buttons a {
+.Control .buttons .btn a, .Control .buttons .btn a:visited {
     color: #2e6da4;
     text-decoration: none;
+    text-shadow: rgba(200, 200, 200, 0.5) 0px 1px 1px;
+}
+
+.Control .buttons .btn a:hover {
+    color: #3e6e96;
 }

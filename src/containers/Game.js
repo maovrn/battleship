@@ -8,8 +8,6 @@ import store from '../store';
 import * as actions from "../store/actions";
 import './Game.css';
 
-import * as game from '../game';
-
 import Welcome from '../components/Welcome';
 import Battleground from './Battleground';
 import Statistics from './Control';
@@ -29,8 +27,6 @@ class Game extends Component {
     onStart = () => {
         console.log('Game starts');
         actions.startGame();
-        let battle = game.generateBattleMatrixAndShips()
-        console.log('battle generated', battle);
     }
 
 

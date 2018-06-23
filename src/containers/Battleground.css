@@ -13,11 +13,25 @@
     fill: transparent;
     stroke-width: 1px;
     stroke: rgb(112, 166, 6);
-    opacity: 0.9;
     cursor: pointer;
 }
 
 .grid .cell:hover {
     fill: rgb(50,50,50);
     opacity: 0.25;
+}
+
+.grid .cell.miss {
+    cursor: default;
+    fill: #ffffff;
+}
+.grid .cell.miss:hover {
+    opacity: 1;
+}
+.grid .cell.hit {
+    cursor: default;
+    fill: #ffb2b2;
+}
+.grid .cell.hit:hover {
+    opacity: 1;
 }

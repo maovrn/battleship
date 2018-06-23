@@ -20,10 +20,15 @@ export const initialShipCount = [
     [DotShape, 2]
 ];
 
-// codes of ship matrix
-export const deckSign = 3,
-            touchSign = 1,
-          nothingSign = 0;
+// codes of ships and statuses in matrix
+export const sign = {
+    empty: 0,
+    touch: 1,
+    deck:  3,
+    /* result of clicks */
+    miss: 5,
+    hit: 7
+}
 
 
 /* Battle ships and matrix generation */
@@ -39,15 +44,15 @@ function generateShip(shape) {
 
 function checkDeckCount (mtrx, ships) {
     let decks = ships.reduce((acc, ship) => {return acc + ship.decks}, 0);
-    return matrix.countValues(mtrx, deckSign) === decks;
+    return matrix.countValues(mtrx, sign.deck) === decks;
 }
 
 function checkNoIntersection (mtrx) {
-    return matrix.countValues(mtrx, deckSign + deckSign) === 0;
+    return matrix.countValues(mtrx, sign.deck + sign.deck) === 0;
 }
 
 function checkNoNearPlacement (mtrx) {
-    return matrix.countValues(mtrx, deckSign + touchSign) === 0;
+    return matrix.countValues(mtrx, sign.deck + sign.touch) === 0;
 }
 
 function validPlacement (mtrx, ships) {
