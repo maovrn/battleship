@@ -1,6 +1,13 @@
 .App {
+    width: 800px;
+    height: 600px;
+    margin: 0 auto;
+
     text-align: center;
     background: transparent;
+    position: relative;
+    top: 20px;
+    bottom: 20px;
 }
 
 /* Button styles are inspired by Bootstrap styles

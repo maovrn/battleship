@@ -35,21 +35,21 @@ class Game extends Component {
 
 
     render() {
-        return (
-            <div className="Game">
-                {this.props.gameState === 'welcome' &&
-                    <Welcome onStart={this.onStart} />
-                }
-                {this.props.gameState === 'play' &&
+        if (this.props.gameState === 'welcome') {
+            return (
+                <Welcome onStart={this.onStart} />
+            )
+        }
+        if (this.props.gameState === 'play') {
+            return (
+                <div className="Game">
                     <div className="panels">
-                        <Statistics />
-                        <Battleground />
+                        <Statistics/>
+                        <Battleground/>
                     </div>
-                }
-
-
-            </div>
-        );
+                </div>
+            )
+        }
     }
 
 }
