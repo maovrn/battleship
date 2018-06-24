@@ -124,7 +124,7 @@ export function generateBattleMatrixAndShips () {
  * @returns {Object|null}
  */
 export function findShip (ships, x, y) {
-    // place every ship on zero matrix then check if x,y point a deck
+    // place every ship on zero matrix then check if x,y points a deck
     let bg = matrix.generate(maxX, maxY);
     return ships.find(ship => {
         let bg_test = matrix.apply(bg, ship.matrix, ship.x, ship.y);
@@ -132,6 +132,30 @@ export function findShip (ships, x, y) {
     }) || null;
 }
 
-export function checkGameWin (ships) {
+/**
+ * Check point on matrix provided - if it's hit or miss.
+ * Return new copy of the matrix with a mark checked, and a boolean result of cheque.
+ * @param mtrx {Array} - matrix to check
+ * @param x {Integer}  - x coordinate of the point
+ * @param y {Integer}  - y coordinate of the point
+ * @returns {{matrix: Array, hit: boolean}}
+ */
+export function checkPoint (mtrx, x, y) {
+    let bg = matrix.clone(mtrx),
+        hit = (mtrx[y][x] === sign.deck);
+
+    bg[y][x] = (hit ? sign.hit : sign.miss);
+    return {
+        matrix: bg,
+        hit: hit
+    }
+}
+
+/**
+ * Check if game is finished
+ * @param ships {Array} - array of ships of the battle
+ * @returns {boolean} - return true if the game is finished
+ */
+export function isGameWin (ships) {
     return !ships.some((ship) => ship.decks > ship.hits);
 }

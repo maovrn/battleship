@@ -13,7 +13,7 @@ export default function DotShape () {
                 [1, 1, 1]
             ]
         ],
-        /* polygon points. Order must relates to the variants above */
+        /* polygon points. Order must corresponds to the variants above */
         frames: [
             [[1,1], [2,1], [2,2], [1,2], [1,1]]
         ]

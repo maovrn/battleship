@@ -1,39 +1,26 @@
 /***********************************************************************************************************************
- * Game area with common logic.
+ * Whole game area with the logic corresponded to game state.
  **********************************************************************************************************************/
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import store from '../store';
+import * as game from "../game";
 import * as actions from "../store/actions";
 import './Game.css';
 
 import Welcome from '../components/Welcome';
 import WinScreen from '../components/WinScreen';
 import Battleground from './Battleground';
-import Statistics from './Control';
+import Control from './Control';
 
-import * as game from "../game";
 
 class Game extends Component {
 
-    /*
-    constructor(props, context) {
-        super(props, context);
-
-    }
-
-    componentDidMount() {
-
-    }
-    */
-
-
     onStart = () => {
-        console.log('Game starts');
-        actions.startGame();
+        // init new game parameters
+        let battle = game.generateBattleMatrixAndShips();
+        actions.startGame(battle);
     }
-
 
     render() {
         if (this.props.gameState === 'welcome') {
@@ -44,7 +31,7 @@ class Game extends Component {
             return (
                 <div className="Game">
                     <div className="panels">
-                        <Statistics/>
+                        <Control/>
                         <Battleground/>
                     </div>
                     {this.props.gameState === 'win' &&
@@ -59,7 +46,7 @@ class Game extends Component {
 
 export default connect(state => {
     return {
-        gameState: (state.gameState === 'play' && game.checkGameWin(state.ships)) ? 'win' : state.gameState || 'welcome',
+        gameState: (state.gameState === 'play' && game.isGameWin(state.ships)) ? 'win' : state.gameState || 'welcome',
         shots: state.shots
     }
 })(Game);

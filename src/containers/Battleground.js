@@ -1,33 +1,31 @@
 /***********************************************************************************************************************
- * Battle area
+ * Battle area UI, includes clicks handler and shot result calculation.
  **********************************************************************************************************************/
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import store from '../store';
 import * as actions from "../store/actions";
+
 import './Battleground.css';
 import BattlegroundBack from '../components/BattlegroundBack';
 
 import {maxX, maxY, sign} from '../game';
-import * as matrix from '../utils/matrix'
 import * as game from "../game";
+
 
 class Battleground extends Component {
 
     componentDidMount() {
+        // Redux reducer on SHOT action to calculate shot results
         store.registerReducer('SHOT', function(state, action){
-            let mtrx  = matrix.clone(state.matrix);
-            let result = (mtrx[action.y][action.x] === sign.deck ? 'hit' : 'miss');
-
-            mtrx[action.y][action.x] = (result === 'hit' ? sign.hit : sign.miss);
-            if (result === 'hit') {
-                 // find hited ship
-                let ship = game.findShip(state.ships, action.x, action.y);
-                ship.hits++;
+            state.shots++;
+            let cheque = game.checkPoint(state.matrix, action.x, action.y);
+            if (cheque.hit) {
+                game.findShip(state.ships, action.x, action.y).hits++;
             }
 
-            return Object.assign({}, state, {matrix: mtrx, shots: state.shots + 1});
+            return Object.assign({}, state, {matrix: cheque.matrix});
         });
     }
 
@@ -36,7 +34,6 @@ class Battleground extends Component {
         let x = Number.parseInt(e.target.getAttribute('data-x'), 10),
             y = Number.parseInt(e.target.getAttribute('data-y'), 10);
         if (Number.isInteger(x) && Number.isInteger(y)) {
-            //console.log('click', x, y);
             let point = this.props.matrix[y][x];
             if (point !== sign.miss && point !== sign.hit) {
                 actions.shoot(x, y);
@@ -45,21 +42,22 @@ class Battleground extends Component {
     }
 
     render() {
+
         var scale = 50;
 
         // draw cells
         var cells = [];
         for (let i=0; i<maxY; i++) {
             for (let j=0; j<maxX; j++) {
-                let s = this.props.matrix[j][i] || 0;
-                let status = (s === sign.hit ? 'hit' : (s === sign.miss ? 'miss' : ''));
+                let point = this.props.matrix[j][i] || 0;
+                let status = (point === sign.hit ? 'hit' : (point === sign.miss ? 'miss' : ''));
                 cells.push(
                     <rect key={'cell_' + i + '_' + j} className={'cell ' + status} x={i * scale} y={j * scale} data-x={i} data-y={j}/>
                 );
             }
         }
 
-        // draw ships
+        // draw fired ships
         var shipFrames = [];
         this.props.ships.forEach(ship => {
             if (ship.frame && (ship.decks === ship.hits)) {

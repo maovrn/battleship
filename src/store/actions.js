@@ -2,16 +2,13 @@
  * Redux action creators: common used functions called by containers
  **********************************************************************************************************************/
 import store from '.';
-import * as game from "../game";
 
-
-export function startGame () {
-    let battle = game.generateBattleMatrixAndShips();
+export function startGame (params) {
     store.dispatch({
         type: 'GAME_START',
         gameState: 'play',
-        matrix: battle.matrix,
-        ships:  battle.ships,
+        matrix: params.matrix,
+        ships:  params.ships,
         shots:  0
     });
 }
