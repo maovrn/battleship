@@ -1,10 +1,10 @@
-# Battle ship test task
+# Battle ship game
 
 
 
 ## Project requirements
 
-Preferably develop following task in React with TypeScript. Make sure code is posted in gitgub or binbucket public repo.
+Preferably develop following task in React with TypeScript. Make sure code is posted in github or bitbucket public repo.
 
 1) Let's create an onscreen grid of cells aligned within a square 10 by 10.
 
@@ -22,3 +22,14 @@ Each ship must have outline color defining boundaries of a ship.
 
 
 
+## Implementation
+
+The task is completed in React + Redux with vanilla JS ES6. 
+
+
+
+## [Demo](https://battleship-453e1.firebaseapp.com/)
+
+UI example:
+
+![User interface](./UI.png)
