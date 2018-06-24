@@ -22,7 +22,7 @@ class Welcome extends Component {
                        Good luck in the search!
                     </p>
                     <button className="btn btn-default" onClick={this.props.onStart}>Start game</button>
-                    <div className="signature">Developed by Ilya Grebtsov</div>
+                    <div className="signature">Developed by Ilya Grebtsov, 2018</div>
                 </div>
             </div>
         );
