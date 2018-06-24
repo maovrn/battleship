@@ -36,7 +36,7 @@ export const sign = {
 
 function generateShip(shape) {
     let ship = shape(),
-        variant = ship.variants.length >2 ? 3 : utils.getRandomInt(0, ship.variants.length);
+        variant = utils.getRandomInt(0, ship.variants.length);
     return {
         name:   ship.name || 'Ship',
         decks:  ship.decks || 0,
