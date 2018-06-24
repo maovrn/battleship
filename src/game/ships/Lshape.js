@@ -3,7 +3,7 @@
  **********************************************************************************************************************/
 export default function Lshape () {
     return {
-        name: 'L-shape ship',
+        name: 'L-shaped',
         decks: 4,
         /* predefined matrix of all available forms. 3 - ship, 1 - other ships free place */
         variants: [

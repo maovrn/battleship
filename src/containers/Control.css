@@ -29,8 +29,9 @@
 }
 
 .Control .buttons {
-    height: 400px;
-    position: relative;
+    height: 200px;
+    position: absolute;
+    bottom: 0;
 }
 
 .Control .buttons .btn {
@@ -49,4 +50,32 @@
 
 .Control .buttons .btn a:hover {
     color: #3e6e96;
+}
+
+.Control .wanted-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    text-align: justify;
+}
+.Control .wanted-list li {
+    width: 120%;
+    white-space: nowrap;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.Control .wanted-list .name {
+    display: block;
+    text-align: left;
+}
+.Control .wanted-list .count {
+    color: #888;
+    display: block;
+    text-align: right;
+}
+.Control .wanted-list .count::before {
+    content: " x";
+    font-size: 10px;
 }

@@ -35,5 +35,3 @@ export function generateNumbers (start, end) {
 export function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
 }
-
-window.getRandomInt = getRandomInt

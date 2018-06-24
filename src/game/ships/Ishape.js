@@ -3,7 +3,7 @@
  **********************************************************************************************************************/
 export default function Ishape () {
     return {
-        name: 'I-shape ship',
+        name: 'I-shaped',
         decks: 4,
         /* predefined matrix of all available forms. 3 - ship, 1 - other ships free place */
         variants: [

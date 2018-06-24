@@ -17,7 +17,7 @@ class WinScreen extends Component {
             <div className="WinScreen">
                 <div className="content">
                     <h1>Congratulations!</h1>
-                    <p>All the ships were hit by just {this.props.shots} shots!</p>
+                    <p>All the ships were destroyed by just {this.props.shots} shots!</p>
                     <button className="btn btn-default" onClick={this.props.onStart}>Start again</button>
                 </div>
             </div>

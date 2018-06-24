@@ -3,7 +3,7 @@
  **********************************************************************************************************************/
 export default function DotShape () {
     return {
-        name: 'Single deck ship',
+        name: 'Dot-shaped',
         decks: 1,
         /* predefined matrix of all available forms. 3 - ship, 1 - other ships free place */
         variants: [
