@@ -49,7 +49,9 @@ class Battleground extends Component {
                 let point = this.props.matrix[j][i];
                 let status = (point === sign.hit ? 'hit' : (point === sign.miss ? 'miss' : ''));
                 ret.push(
-                    <rect key={'cell_' + i + '_' + j} className={'cell ' + status} x={i * scale} y={j * scale} data-x={i} data-y={j}/>
+                    <rect key={'cell_' + i + '_' + j} className={'cell ' + status}
+                          x={i * scale} y={j * scale} width={scale+'px'} height={scale+'px'}
+                          data-x={i} data-y={j}/>
                 );
             }
         }
