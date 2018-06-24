@@ -22,16 +22,29 @@
     opacity: 0.25;
 }
 
+@keyframes MissAppears {
+    from {fill: #d8f6ff;}
+    to {fill: #ffffff;}
+}
 .grid .cell.miss {
     cursor: default;
     fill: #ffffff;
+    animation-name: MissAppears;
+    animation-duration: 0.3s;
 }
 .grid .cell.miss:hover {
     opacity: 1;
 }
+
+@keyframes HitAppears {
+    from {fill: #d8f6ff;}
+    to {fill: #ffb2b2;}
+}
 .grid .cell.hit {
     cursor: default;
     fill: #ffb2b2;
+    animation-name: HitAppears;
+    animation-duration: 0.3s;
 }
 .grid .cell.hit:hover {
     opacity: 1;
