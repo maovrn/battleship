@@ -84,7 +84,7 @@ class Battleground extends Component {
         return (
             <div className="Battleground">
                 <BattlegroundBack cols={maxX} rows={maxY}>
-                    <svg className="grid" onClick={this.click}>
+                    <svg className="grid" onClick={this.click} width={maxX * scale} height={maxY * scale}>
                         {this.renderCells(scale)}
                         {this.renderShips(scale)}
                     </svg>

@@ -8,8 +8,6 @@
     background: #D8F6FF;
 }
 .grid .cell {
-    width: 50px;
-    height: 50px;
     fill: transparent;
     stroke-width: 1px;
     stroke: #2e6da4;
