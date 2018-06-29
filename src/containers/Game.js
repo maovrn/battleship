@@ -10,6 +10,7 @@ import './Game.css';
 
 import Welcome from '../components/Welcome';
 import WinScreen from '../components/WinScreen';
+import ShipSetup from './ShipSetup';
 import Battleground from './Battleground';
 import Control from './Control';
 
@@ -19,13 +20,20 @@ class Game extends Component {
     onStart = () => {
         // init new game parameters
         let battle = game.generateBattleMatrixAndShips();
-        actions.startGame(battle);
+        //actions.startGame(battle);
+        actions.setupGame(battle);
     }
 
     render() {
         if (this.props.gameState === 'welcome') {
             return (
                 <Welcome onStart={this.onStart}/>
+            )
+        } else if (this.props.gameState === 'setup') {
+            return (
+                <div className="Game">
+                    <ShipSetup/>
+                </div>
             )
         } else {
             return (

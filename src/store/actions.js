@@ -3,6 +3,16 @@
  **********************************************************************************************************************/
 import store from '.';
 
+export function setupGame (params) {
+    store.dispatch({
+        type: 'GAME_SETUP',
+        gameState: 'setup',
+        matrix: params.matrix,
+        ships:  params.ships,
+        shots:  0
+    });
+}
+
 export function startGame (params) {
     store.dispatch({
         type: 'GAME_START',

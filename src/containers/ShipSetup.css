@@ -1,0 +1,27 @@
+.ShipSetup {
+    text-align: left;
+}
+.ShipSetup .grid {
+    width: 500px;
+    height: 500px;
+    border: 1px solid #333;
+    background: #ffffff;
+}
+.ShipSetup .grid .cell {
+    fill: transparent;
+    stroke-width: 1px;
+    stroke: #7bafdc;
+    cursor: default;
+    z-index: 9;
+}
+
+.ShipSetup .grid .cell:hover {
+
+}
+
+.ShipSetup .grid .ship-frame {
+    fill: #d8f6ff;
+    stroke-width: 2px;
+    stroke: #4664fc;
+    z-index: 99;
+}

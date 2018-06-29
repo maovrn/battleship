@@ -1,21 +1,21 @@
 .Battleground {
     text-align: left;
 }
-.grid {
+.Battleground .grid {
     width: 500px;
     height: 500px;
     border: 1px solid #333;
-    background: #D8F6FF;
+    background: #d8f6ff;
 }
-.grid .cell {
+.Battleground .grid .cell {
     fill: transparent;
     stroke-width: 1px;
-    stroke: #2e6da4;
+    stroke: #7bafdc;
     cursor: pointer;
     z-index: 9;
 }
 
-.grid .cell:hover {
+.Battleground .grid .cell:hover {
     fill: rgb(50,50,50);
     opacity: 0.25;
 }
@@ -24,13 +24,13 @@
     from {fill: #d8f6ff;}
     to {fill: #ffffff;}
 }
-.grid .cell.miss {
+.Battleground .grid .cell.miss {
     cursor: default;
     fill: #ffffff;
     animation-name: MissAppears;
     animation-duration: 0.3s;
 }
-.grid .cell.miss:hover {
+.Battleground .grid .cell.miss:hover {
     opacity: 1;
 }
 
@@ -38,13 +38,13 @@
     from {fill: #d8f6ff;}
     to {fill: #ffb2b2;}
 }
-.grid .cell.hit {
+.Battleground .grid .cell.hit {
     cursor: default;
     fill: #ffb2b2;
     animation-name: HitAppears;
     animation-duration: 0.3s;
 }
-.grid .cell.hit:hover {
+.Battleground .grid .cell.hit:hover {
     opacity: 1;
 }
 
@@ -53,7 +53,7 @@
     to   {opacity: 1;}
 }
 
-.grid .ship-frame {
+.Battleground .grid .ship-frame {
     fill: #ffb2b2;
     stroke-width: 2px;
     stroke: #fd4545;
