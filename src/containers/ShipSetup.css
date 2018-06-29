@@ -19,9 +19,14 @@
 
 }
 
-.ShipSetup .grid .ship-frame {
+.ShipSetup .ship-frame {
     fill: #d8f6ff;
     stroke-width: 2px;
     stroke: #4664fc;
     z-index: 99;
+    cursor: move;
+}
+
+.ShipSetup .ship-frame.dragging {
+    /*opacity: 0;*/
 }

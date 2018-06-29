@@ -4,11 +4,18 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { DragSource, DropTarget, DragDropContext } from 'react-dnd';
+import { findDOMNode } from 'react-dom';
+//import HTML5Backend from 'react-dnd-html5-backend';
+import MouseBackend from 'react-dnd-mouse-backend';
+import { default as TouchBackend } from 'react-dnd-touch-backend';
 import store from '../store';
 import * as actions from "../store/actions";
 
 import './ShipSetup.css';
 import BattlegroundBack from '../components/BattlegroundBack';
+import Cell from '../components/Cell';
+import Ship from '../components/Ship';
 
 import {maxX, maxY, sign} from '../game';
 import * as game from "../game";
@@ -21,25 +28,23 @@ class ShipSetup extends Component {
     }
 
     click = (e) => {
-        e.stopPropagation();
+        //e.stopPropagation();
 
     }
 
     renderCells = (scale) => {
+
         let ret = [];
         for (let i=0; i<maxY; i++) {
             for (let j=0; j<maxX; j++) {
-                ret.push(
-                    <rect key={'cell_' + i + '_' + j} className="cell"
-                          x={i * scale} y={j * scale} width={scale+'px'} height={scale+'px'}
-                          data-x={i} data-y={j}/>
-                );
+                ret.push( <Cell key={'cell_' + j + '_' + i} x={j} y={i} scale={scale} /> );
             }
         }
         return ret;
     }
 
     renderShips = (scale) => {
+        //const {connectDragSource, isDragging} = this.props;
         let ret = [];
         this.props.ships.forEach(ship => {
             let points = ship.frame.reduce((acc, point) => {
@@ -49,9 +54,7 @@ class ShipSetup extends Component {
                 return acc + ' ' + [x, y].join();
             }, "");
 
-            ret.push(
-                <polygon key={'ship_'+ship.x+'_'+ship.y} className="ship-frame" points={points}/>
-            );
+            ret.push( <Ship key={'ship_'+ship.x+'_'+ship.y} points={points} name={ship.name} draggable={true}/> );
         });
         return ret;
     }
@@ -73,9 +76,10 @@ class ShipSetup extends Component {
 
 }
 
+
 export default connect(state => {
     return {
         matrix: state.matrix || [],
         ships:  state.ships || []
     }
-})(ShipSetup);
+})( DragDropContext(TouchBackend({ enableMouseEvents: true }))(ShipSetup) );
