@@ -7,13 +7,15 @@ import { connect } from 'react-redux';
 import { DragSource, DropTarget, DragDropContext } from 'react-dnd';
 import { findDOMNode } from 'react-dom';
 //import HTML5Backend from 'react-dnd-html5-backend';
-import MouseBackend from 'react-dnd-mouse-backend';
-import { default as TouchBackend } from 'react-dnd-touch-backend';
+//import MouseBackend from 'react-dnd-mouse-backend';
+import TouchBackend from 'react-dnd-touch-backend';
+
 import store from '../store';
 import * as actions from "../store/actions";
 
 import './ShipSetup.css';
 import BattlegroundBack from '../components/BattlegroundBack';
+import Grid from '../components/Grid';
 import Cell from '../components/Cell';
 import Ship from '../components/Ship';
 
@@ -65,10 +67,10 @@ class ShipSetup extends Component {
         return (
             <div className="ShipSetup">
                 <BattlegroundBack cols={maxX} rows={maxY}>
-                    <svg className="grid" onClick={this.click} width={maxX * scale} height={maxY * scale}>
+                    <Grid onClick={this.click} width={maxX * scale} height={maxY * scale}>
                         {this.renderCells(scale)}
                         {this.renderShips(scale)}
-                    </svg>
+                    </Grid>
                 </BattlegroundBack>
             </div>
         );
@@ -82,4 +84,4 @@ export default connect(state => {
         matrix: state.matrix || [],
         ships:  state.ships || []
     }
-})( DragDropContext(TouchBackend({ enableMouseEvents: true }))(ShipSetup) );
+})( DragDropContext(TouchBackend({ enableMouseEvents: true, enableKeyboardEvents: true }))(ShipSetup) );
