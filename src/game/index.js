@@ -162,6 +162,18 @@ export function checkPoint (mtrx, x, y) {
 }
 
 /**
+ * Return true if point has been checked on the matrix, that means it is marked as hit or miss.
+ * @param mtrx
+ * @param x {Integer}  - x coordinate of the point
+ * @param y {Integer}  - y coordinate of the point
+ * @returns {boolean}
+ */
+export function isPointChecked (mtrx, x, y) {
+    let point = mtrx[y][x];
+    return (point === sign.miss || point === sign.hit);
+}
+
+/**
  * Check if game is finished
  * @param ships {Array} - array of ships of the battle
  * @returns {boolean} - return true if the game is finished

@@ -1,23 +1,23 @@
 /***********************************************************************************************************************
- * Wrapper component - Background for the battleground. Create a table to display column and row names.
+ * Wrapper component - Background for the battleground grid, that is a table to display column and row names.
  *
  * Props must be provided:
- * - cols {Integer} - max x size
- * - rows {Integer} - max y size
+ * - cols {Integer} - number of columns
+ * - rows {Integer} - number of rows
  **********************************************************************************************************************/
 
 import React, { Component } from 'react';
-import './BattlegroundBack.css';
+import './GridBack.css';
 import * as utils from '../utils';
 
-class BattlegroundBack extends Component {
+class GridBack extends Component {
 
     render() {
         const columns = utils.generateLetters(0, this.props.cols);
         const rows = utils.generateNumbers(2, this.props.rows);
 
         return (
-            <table className="BattlegroundBack" cols={this.props.cols + 1}><tbody>
+            <table className="GridBack" cols={this.props.cols + 1}><tbody>
                 <tr key={'row0'}>
                     <td className="header-column"></td>
                     {columns.map(column => <td key={'column'+column} className="header-column">{column}</td> )}
@@ -35,4 +35,4 @@ class BattlegroundBack extends Component {
 
 }
 
-export default BattlegroundBack;
+export default GridBack;

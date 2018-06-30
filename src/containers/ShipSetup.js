@@ -1,5 +1,5 @@
 /***********************************************************************************************************************
- * Setup ships on battle area.
+ * Setup player's ships on battle area.
  **********************************************************************************************************************/
 
 import React, { Component } from 'react';
@@ -7,20 +7,19 @@ import { connect } from 'react-redux';
 
 import store from '../store';
 import * as actions from "../store/actions";
+import * as game from "../game";
+import * as utils from "../utils";
 
-import './ShipSetup.css';
-import BattlegroundBack from '../components/BattlegroundBack';
+import GridBack from '../components/GridBack';
 import Grid from '../components/Grid';
 import Cell from '../components/Cell';
 import Ship from '../components/Ship';
-
-import * as game from "../game";
-import * as utils from "../utils";
+import './ShipSetup.css';
 
 
 class ShipSetup extends Component {
 
-    scale = 50; // magic constant according CSS styles
+    scale = 50; // magic constant according CSS styles (cell width or height in pixels)
 
     componentDidMount() {
         store.registerReducer('SHIP_MOVE', function(state, action){
@@ -52,7 +51,7 @@ class ShipSetup extends Component {
     }
 
     validShipMovement = (ship, dx, dy) => {
-        // validate ship position along with other ships
+        // validate ship position along with the others ships
         let ships = utils.cloneObjects(this.props.ships);
         ships[ship.id].x += dx;
         ships[ship.id].y += dy;
@@ -76,12 +75,12 @@ class ShipSetup extends Component {
     render() {
         return (
             <div className="ShipSetup">
-                <BattlegroundBack cols={game.maxX} rows={game.maxY}>
+                <GridBack cols={game.maxX} rows={game.maxY}>
                     <Grid onClick={this.click} width={game.maxX * this.scale} height={game.maxY * this.scale}>
                         {this.renderCells()}
                         {this.renderShips()}
                     </Grid>
-                </BattlegroundBack>
+                </GridBack>
             </div>
         );
     }

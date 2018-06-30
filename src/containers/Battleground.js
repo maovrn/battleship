@@ -6,20 +6,18 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import store from '../store';
 import * as actions from "../store/actions";
+import * as game from "../game";
 
-import './Battleground.css';
-import BattlegroundBack from '../components/BattlegroundBack';
+import GridBack from '../components/GridBack';
 import Grid from '../components/Grid';
 import Cell from '../components/Cell';
 import Ship from '../components/Ship';
-
-import {maxX, maxY, sign} from '../game';
-import * as game from "../game";
+import './Battleground.css';
 
 
 class Battleground extends Component {
 
-    scale = 50; // magic constant according CSS styles
+    scale = 50; // magic constant according CSS styles (cell width or height in pixels)
 
     componentDidMount() {
         // Redux reducer on SHOT action to calculate shot results
@@ -40,8 +38,7 @@ class Battleground extends Component {
         let x = Number.parseInt(e.target.getAttribute('data-x'), 10),
             y = Number.parseInt(e.target.getAttribute('data-y'), 10);
         if (Number.isInteger(x) && Number.isInteger(y)) {
-            let point = this.props.matrix[y][x];
-            if (point !== sign.miss && point !== sign.hit) {
+            if (!game.isPointChecked(this.props.matrix, x, y)) {
                 actions.shoot(x, y);
             }
         }
@@ -79,12 +76,12 @@ class Battleground extends Component {
     render() {
         return (
             <div className="Battleground">
-                <BattlegroundBack cols={game.maxX} rows={game.maxY}>
+                <GridBack cols={game.maxX} rows={game.maxY}>
                     <Grid onClick={this.click} width={game.maxX * this.scale} height={game.maxY * this.scale}>
                         {this.renderCells()}
                         {this.renderShips()}
                     </Grid>
-                </BattlegroundBack>
+                </GridBack>
             </div>
         );
     }
