@@ -9,12 +9,17 @@ import * as actions from "../store/actions";
 
 import './Battleground.css';
 import BattlegroundBack from '../components/BattlegroundBack';
+import Grid from '../components/Grid';
+import Cell from '../components/Cell';
+import Ship from '../components/Ship';
 
 import {maxX, maxY, sign} from '../game';
 import * as game from "../game";
 
 
 class Battleground extends Component {
+
+    scale = 50; // magic constant according CSS styles
 
     componentDidMount() {
         // Redux reducer on SHOT action to calculate shot results
@@ -42,52 +47,43 @@ class Battleground extends Component {
         }
     }
 
-    renderCells = (scale) => {
+    renderCells = () => {
         let ret = [];
-        for (let i=0; i<maxY; i++) {
-            for (let j=0; j<maxX; j++) {
-                let point = this.props.matrix[j][i];
-                let status = (point === sign.hit ? 'hit' : (point === sign.miss ? 'miss' : ''));
+        for (let i=0; i<game.maxY; i++) {
+            for (let j=0; j<game.maxX; j++) {
                 ret.push(
-                    <rect key={'cell_' + i + '_' + j} className={'cell ' + status}
-                          x={i * scale} y={j * scale} width={scale+'px'} height={scale+'px'}
-                          data-x={i} data-y={j}/>
+                    <Cell key={'cell_' + j + '_' + i}
+                          x={j}
+                          y={i}
+                          scale={this.scale}
+                          point={this.props.matrix[i][j]}
+                    />
                 );
             }
         }
         return ret;
     }
 
-    renderShips = (scale) => {
-        let ret = [];
-        this.props.ships.forEach(ship => {
-            // draw only the ships that are fired
-            if (ship.decks === ship.hits) {
-                let points = ship.frame.reduce((acc, point) => {
-                    let [x, y] = point;
-                    x = (ship.x + x) * scale;
-                    y = (ship.y + y) * scale;
-                    return acc + ' ' + [x, y].join();
-                }, "");
-
-                ret.push(
-                    <polygon key={'ship_'+ship.x+'_'+ship.y} className="ship-frame" points={points}/>
-                );
-            }
-        });
-        return ret;
+    renderShips = () => {
+        return this.props.ships
+            .filter(ship => ship.decks === ship.hits) // render only the ships that have been fired
+            .map(ship => (
+                <Ship key={'comp_ship_'+ship.id}
+                      ship={ship}
+                      scale={this.scale}
+                      draggable={false}
+                />
+            ))
     }
 
     render() {
-        const scale = 50; // magic value according CSS styles
-
         return (
             <div className="Battleground">
-                <BattlegroundBack cols={maxX} rows={maxY}>
-                    <svg className="grid" onClick={this.click} width={maxX * scale} height={maxY * scale}>
-                        {this.renderCells(scale)}
-                        {this.renderShips(scale)}
-                    </svg>
+                <BattlegroundBack cols={game.maxX} rows={game.maxY}>
+                    <Grid onClick={this.click} width={game.maxX * this.scale} height={game.maxY * this.scale}>
+                        {this.renderCells()}
+                        {this.renderShips()}
+                    </Grid>
                 </BattlegroundBack>
             </div>
         );

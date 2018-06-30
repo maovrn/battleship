@@ -60,9 +60,8 @@ class ShipSetup extends Component {
     }
 
     renderShips = () => {
-        let ret = [];
-        this.props.ships.forEach(ship => {
-            ret.push(
+        return this.props.ships
+            .map(ship => (
                 <Ship key={'player_ship_'+ship.id}
                       ship={ship}
                       scale={this.scale}
@@ -71,9 +70,7 @@ class ShipSetup extends Component {
                       validate={this.validShipMovement}
                       moveShip={actions.moveShip}
                 />
-            );
-        });
-        return ret;
+            ));
     }
 
     render() {
