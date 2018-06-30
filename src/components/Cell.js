@@ -1,7 +1,12 @@
-//import React from 'react';
+/***********************************************************************************************************************
+ * Cell of SVG Grid
+ *
+ * Props must be provided:
+ * - x {Number}      - x coordinate of the cell
+ * - y {Number}      - y coordinate of the cell
+ * - scale {Number}  - scale number according styles
+ **********************************************************************************************************************/
 import React, { Component } from 'react';
-import {findDOMNode} from "react-dom";
-import {DropTarget} from "react-dnd";
 
 class Cell extends Component {
     render() {
