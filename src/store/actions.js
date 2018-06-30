@@ -39,3 +39,9 @@ export function shoot (x, y) {
     });
 }
 
+export function moveShip (ship, dx, dy) {
+    store.dispatch({
+        type: 'SHIP_MOVE',
+        ship, dx, dy
+    });
+}

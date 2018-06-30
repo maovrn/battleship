@@ -21,11 +21,18 @@ import Ship from '../components/Ship';
 
 import {maxX, maxY, sign} from '../game';
 import * as game from "../game";
+import * as utils from "../utils";
 
 
 class ShipSetup extends Component {
 
     componentDidMount() {
+        store.registerReducer('SHIP_MOVE', function(state, action){
+            let ship = state.ships[action.ship.id];
+            ship.x += action.dx;
+            ship.y += action.dy;
+            return Object.assign({}, state);
+        });
 
     }
 
@@ -46,17 +53,27 @@ class ShipSetup extends Component {
     }
 
     renderShips = (scale) => {
-        //const {connectDragSource, isDragging} = this.props;
+        //console.log('renderShips',this.props.ships);
+
+        const validMovement = (ship, dx, dy) => {
+            let ships = utils.cloneObjects(this.props.ships);
+            ships[ship.id].x += dx;
+            ships[ship.id].y += dy;
+            return game.validShipPlacement(ships);
+        }
+
         let ret = [];
         this.props.ships.forEach(ship => {
-            let points = ship.frame.reduce((acc, point) => {
-                let [x, y] = point;
-                x = (ship.x + x) * scale;
-                y = (ship.y + y) * scale;
-                return acc + ' ' + [x, y].join();
-            }, "");
-
-            ret.push( <Ship key={'ship_'+ship.x+'_'+ship.y} points={points} name={ship.name} draggable={true}/> );
+            ret.push(
+                <Ship key={'player_ship_'+ship.id}
+                      ship={ship}
+                      scale={scale}
+                      draggable={true}
+                      stickiness={0.1}
+                      validMovement={validMovement}
+                      moveShip={actions.moveShip}
+                />
+            );
         });
         return ret;
     }

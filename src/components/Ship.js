@@ -1,20 +1,35 @@
 import React, { Component } from 'react';
 import {DragSource} from "react-dnd";
 import { findDOMNode } from 'react-dom';
+import * as actions from "../store/actions";
 
 
 class Ship extends Component {
+    /* internal state for dragging process */
     state = {
+        dragging: false,
+        valid: true,
         translate: 0
     }
 
     render() {
-        const {connectDragSource, isDragging} = this.props;
-        console.log('isDragging='+isDragging)
+        const {connectDragSource, ship, scale} = this.props;
+        let cls = 'ship-frame'
+            + (this.props.draggable  ? ' draggable' : '')
+            + (this.state.dragging   ? ' dragging' : '')
+            + (!this.state.valid     ? ' invalid' : '');
+
+        let points = this.props.ship.frame.reduce((acc, point) => {
+            let [x, y] = point;
+            x = (ship.x + x) * scale;
+            y = (ship.y + y) * scale;
+            return acc + ' ' + [x, y].join();
+        }, "");
+
         const transform = 'translate(' + (this.state.translate ? this.state.translate : '0') +')';
-        const cls = 'ship-frame ' + (this.state.translate ? 'dragging' : '');
+
         return connectDragSource(
-            <polygon className={cls} points={this.props.points} transform={transform} />
+            <polygon className={cls} points={points} transform={transform} />
         )
     }
 }
@@ -26,35 +41,48 @@ const shipSource = {
         return props.draggable;
     },
     beginDrag(props, monitor, component) {
-        console.log('Ship beginDrag', props);
+        component.setState({ dragging: true });
         return {
-            ship: props.name,
+            ship: props.ship,
             component: component
         };
     },
     isDragging(props, monitor) {
-        console.log('isDragging', props);
-        console.log('component',  monitor.getItem().component);
+        let item = monitor.getItem(),
+            diff = monitor.getDifferenceFromInitialOffset(),
+            dxf = diff.x / props.scale,
+            dyf = diff.y / props.scale,
+            dx  = Math.round(dxf),
+            dy  = Math.round(dyf);
 
-        console.log('getClientOffset()', monitor.getClientOffset());
-        console.log('getInitialClientOffset()', monitor.getInitialClientOffset());
-        console.log('getDifferenceFromInitialOffset()', monitor.getDifferenceFromInitialOffset());
+        if (props.stickiness) {
+            // sticky coordinates
+            if (props.stickiness >= Math.abs(dxf - dx))
+                diff.x = dx * props.scale;
+            if (props.stickiness >= Math.abs(dyf - dy))
+                diff.y = dy * props.scale;
+        }
 
-        console.log('getSourceClientOffset()', monitor.getSourceClientOffset());
+        item.component.setState({
+            translate: diff.x + ',' + diff.y,
+            valid: props.validMovement(item.ship, dx, dy)
+        });
 
-        let dif = monitor.getDifferenceFromInitialOffset();
-        monitor.getItem().component.setState({ translate: dif.x + ',' + dif.y })
-
-        window.elem = findDOMNode(monitor.getItem().component);
-        //window.elem.translate(monitor.getDifferenceFromInitialOffset());
         return true;
     },
-    endDrag(props, monitor) {
-        console.log('endDrag', props);
-        console.log('getDifferenceFromInitialOffset()', monitor.getDifferenceFromInitialOffset());
-        // actually nothing to do here as moving is
-        //const draggedNotice = monitor.getItem().notice;
-        //const didDrop = monitor.didDrop();
+    endDrag(props, monitor, component) {
+        let item = monitor.getItem(),
+            diff = monitor.getDifferenceFromInitialOffset(),
+            dx = Math.round(diff.x / props.scale),
+            dy = Math.round(diff.y / props.scale),
+            valid = props.validMovement(item.ship, dx, dy);
+
+        if (valid) {
+            props.moveShip(item.ship, dx, dy);
+        }
+        // in any case restore default state
+        component.setState({ dragging: false, translate: 0, valid: true });
+
     }
 };
 
@@ -64,6 +92,5 @@ function connectSource(connect, monitor) {
         isDragging: monitor.isDragging()
     };
 }
-
 
 export default DragSource('SHIP', shipSource, connectSource)( Ship );

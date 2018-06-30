@@ -109,3 +109,20 @@ export function countValues (mtrx, value) {
         }, 0);
     }, 0);
 }
+
+/**
+ * Replace specified value in matrix
+ * @param mtrx {Array} - source matrix
+ * @param valueOld {any} - search value
+ * @param valueNew {any} - replaced value
+ * @returns {Array} - the same matrix with replaced values
+ */
+export function replaceValues (mtrx, valueOld, valueNew) {
+    for (let i=0; i<mtrx.length; i++) {
+        for (let j=0; j<mtrx[i].length; j++) {
+            if (mtrx[i][j] === valueOld)
+                mtrx[i][j] = valueNew;
+        }
+    }
+    return mtrx;
+}

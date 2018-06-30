@@ -80,6 +80,15 @@ function setShipRandomXY (ship) {
     return ship;
 }
 
+/**
+ * Return same matrix with double touch sign replaced to a single touch sign.
+ * @param mtrx {Array} - source matrix
+ * @returns {Array} - the same matrix with replaced values
+ */
+function removeDoubleTouchSign (mtrx) {
+    return matrix.replaceValues(mtrx, sign.touch + sign.touch, sign.touch);
+}
+
 
 /**
  * Generate initial state of battle
@@ -96,6 +105,7 @@ export function generateBattleMatrixAndShips () {
         // generate ships of the shape
         for(let j=0; j<cnt; j++) {
             let ship = generateShip(shape);
+            ship.id = ships.length;
             ships.push(ship);
 
             // generate random x, y
@@ -106,7 +116,7 @@ export function generateBattleMatrixAndShips () {
                 var bg_new = matrix.apply(bg, ship.matrix, ship.x, ship.y);
             } while (!validPlacement(bg_new, ships));
 
-            bg = bg_new;
+            bg = removeDoubleTouchSign(bg_new);
         }
     }
 
@@ -158,4 +168,19 @@ export function checkPoint (mtrx, x, y) {
  */
 export function isGameWin (ships) {
     return !ships.some((ship) => ship.decks > ship.hits);
+}
+
+/**
+ * Check position of all ships provided is valid.
+ * @param ships {Array} - array of ships of the battle
+ * @returns {boolean} - return true if position is correct
+ */
+export function validShipPlacement (ships) {
+    let bg = matrix.generate(maxX, maxY);
+    ships.forEach(ship => {
+        bg = removeDoubleTouchSign(
+            matrix.apply(bg, ship.matrix, ship.x, ship.y)
+        );
+    });
+    return validPlacement(bg, ships);
 }

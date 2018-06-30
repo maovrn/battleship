@@ -35,3 +35,12 @@ export function generateNumbers (start, end) {
 export function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
 }
+
+/**
+ * Clone array of objects.
+ * @param arr
+ * @returns {Array}
+ */
+export function cloneObjects(arr) {
+    return arr.map(a => ({...a}));
+}
