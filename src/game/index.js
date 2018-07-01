@@ -31,6 +31,15 @@ export const sign = {
     hit:   7
 }
 
+// Return shape function by ship name
+function getShipShape (ship) {
+    switch (ship.name) {
+        case Lshape().name:   return Lshape;
+        case Ishape().name:   return Ishape;
+        case DotShape().name: return DotShape;
+        default:              return undefined;
+    }
+}
 
 /* Battle ships and matrix generation */
 
@@ -42,6 +51,7 @@ function generateShip(shape) {
         decks:  ship.decks || 0,
         matrix: ship.variants[ variant ],
         frame:  ship.frames[ variant ],
+        v:      variant,
         hits:   0
     }
 }
@@ -195,4 +205,20 @@ export function validShipPlacement (ships) {
         );
     });
     return validPlacement(bg, ships);
+}
+
+
+/**
+ * Return ship object updated with the next variant of the ship shape.
+ * @param ship {Object} - source ship object
+ * @returns {Object}
+ */
+export function rotateShip (ship) {
+    let sh = getShipShape(ship)(),
+        vn = (ship.v + 1 < sh.variants.length) ? ship.v + 1 : 0;
+
+    ship.v = vn;
+    ship.matrix = sh.variants[vn];
+    ship.frame  = sh.frames[vn];
+    return ship;
 }

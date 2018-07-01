@@ -20,4 +20,9 @@ class Grid extends Component {
     }
 }
 
-export default DragDropContext(TouchBackend({ enableMouseEvents: true, enableKeyboardEvents: true }))(Grid);
+export default DragDropContext(TouchBackend({
+    enableTouchEvents: true,
+    enableMouseEvents: true,
+    enableKeyboardEvents: true,
+    touchSlop: 1
+}))(Grid);

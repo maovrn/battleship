@@ -6,19 +6,30 @@
  * - scale {Number}      - scale number according styles
  * - draggable {Boolean} - is the frame can be dragged
  * - stickiness {Float}  - (Optional) a number from 0 to 1 to express sticky characteristic.
- * - validate { function(ship, dx, dy) } - validate movement function
- * - moveShip { function(ship, dx, dy) } - commit movement function
+ * - validate { function(ship, dx, dy) } - callback function to validate movement
+ * - moveShip { function(ship, dx, dy) } - callback function to commit movement
  **********************************************************************************************************************/
 import React, { Component } from 'react';
 import {DragSource} from "react-dnd";
 
 
 class Ship extends Component {
-    /* internal state for dragging process */
+    /* internal state for drag-and-drop process */
     state = {
         dragging: false,
         valid: true,
-        translate: 0
+        translate: 0,
+        preventClick: false
+    }
+
+    // it's an ugly workaround to stop propagation of mouse's click event
+    // caused by react-dnd-touch-backend issue:
+    // https://github.com/yahoo/react-dnd-touch-backend/issues/13
+    preventClick = (e) => {
+        if (this.state.preventClick) {
+            e.stopPropagation();
+            this.setState({preventClick: false});
+        }
     }
 
     render() {
@@ -38,7 +49,12 @@ class Ship extends Component {
         const transform = 'translate(' + (this.state.translate ? this.state.translate : '0') +')';
 
         return connectDragSource(
-            <polygon className={cls} points={points} transform={transform} />
+            <polygon className={cls}
+                     points={points}
+                     transform={transform}
+                     data-id={this.props.ship.id}
+                     onClick={this.preventClick}
+            />
         )
     }
 }
@@ -97,11 +113,20 @@ const shipSource = {
         component.setState({
             dragging: false,
             translate: 0,
-            valid: true
+            valid: true,
+            preventClick: (!hasTouch()) // prevent click event for mouse
         });
         return true;
     }
 };
+
+// To detect touch capability cross-browser:
+// see https://stackoverflow.com/questions/7838680/detecting-that-the-browser-has-no-mouse-and-is-touch-only
+function hasTouch() {
+    return (('ontouchstart' in window) ||   // html5 browsers
+        (navigator.maxTouchPoints > 0) ||   // future IE
+        (navigator.msMaxTouchPoints > 0));  // current IE10
+}
 
 function connectSource(connect, monitor) {
     return {

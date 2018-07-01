@@ -45,3 +45,10 @@ export function moveShip (ship, dx, dy) {
         ship, dx, dy
     });
 }
+
+export function updateShip (ship) {
+    store.dispatch({
+        type: 'SHIP_UPDATE',
+        ship
+    });
+}

@@ -28,10 +28,12 @@ class ShipSetup extends Component {
             ship.y += action.dy;
             return Object.assign({}, state);
         });
-    }
 
-    click = (e) => {
-        e.stopPropagation();
+        store.registerReducer('SHIP_UPDATE', function(state, action){
+            let ships = utils.cloneObjects(state.ships);
+            Object.assign(ships[action.ship.id], action.ship);
+            return Object.assign({}, state, {ships: ships});
+        });
     }
 
     renderCells = () => {
@@ -56,6 +58,16 @@ class ShipSetup extends Component {
         ships[ship.id].x += dx;
         ships[ship.id].y += dy;
         return game.validShipPlacement(ships);
+    }
+
+    click = (e) => {
+        e.stopPropagation();
+        // throw SHIP_UPDATE action with rotated ship if user clicks a ship
+        let id = Number.parseInt(e.target.getAttribute('data-id'), 10);
+        if (Number.isInteger(id)) {
+            let ship = game.rotateShip(this.props.ships[id]);
+            actions.updateShip(ship);
+        }
     }
 
     renderShips = () => {
