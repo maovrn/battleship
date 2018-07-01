@@ -19,7 +19,7 @@ import './ShipSetup.css';
 
 class ShipSetup extends Component {
 
-    scale = 50; // magic constant according CSS styles (cell width or height in pixels)
+    scale = 48; // magic constant according CSS styles (cell width or height in pixels)
 
     componentDidMount() {
         store.registerReducer('SHIP_UPDATE', function(state, action){

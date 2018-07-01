@@ -1,9 +1,9 @@
 .Battleground {
     text-align: left;
+    grid-column: 1 / span 2;
+    grid-row: 1;
 }
 .Battleground .grid {
-    width: 500px;
-    height: 500px;
     border: 1px solid #333;
     background: #d8f6ff;
 }

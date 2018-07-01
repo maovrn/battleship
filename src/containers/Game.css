@@ -1,15 +1,26 @@
 .Game {
-    width: 800px;
-    height: 600px;
+    width: 100%;
+    height: 100%;
     margin: 0 auto;
     background: #fff;
     box-shadow: 0 0 10px rgba(0,0,0,0.5);
     border-radius: 4px;
 }
 
-@media screen and (max-width: 768px) {
+.panels {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: auto;
+    padding: 12px;
+}
+
+@media screen and (max-width: 992px) {
     .Game {
-        width: 100%;
         border-radius: 0;
+        box-shadow: none;
+    }
+    .panels {
+        display: block;
+        padding: 0;
     }
 }

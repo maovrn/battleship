@@ -1,16 +1,18 @@
 .Control {
-    width: 120px;
+    /*width: 120px;
     height: 500px;
     float: right;
     position: relative;
-    margin: 50px 40px 0 40px;
+    margin: 50px 40px 0 40px;*/
     text-align: center;
     font-family: monospace;
+    grid-column: 3;
+    grid-row: 1;
 }
 
 .Control .field {
-    font-family: monospace;
-    height: 50px;
+    min-height: 50px;
+    padding: 4px;
     text-transform: uppercase;
     letter-spacing: 2px;
 }
@@ -28,35 +30,36 @@
     font-weight: normal;
 }
 
-.Control .buttons {
-    height: 200px;
-    position: absolute;
-    bottom: 0;
-}
-
-.Control .buttons .btn {
-    height: 20px;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    padding: 0;
-}
-
-.Control .buttons .btn a, .Control .buttons .btn a:visited {
+.Control .btn a, .Control .btn a:visited {
     color: #2e6da4;
     text-decoration: none;
     text-shadow: rgba(200, 200, 200, 0.5) 0px 1px 1px;
 }
 
-.Control .buttons .btn a:hover {
+.Control .btn a:hover {
     color: #3e6e96;
 }
 
+.Control .setup-state, .Control .play-state {
+    height: 100%;
+}
+
+.Control .bottom {
+    position: relative;
+    top: -38px; /* with 4px padding from the bottom */
+    height: 34px;
+}
+
+.Control .bottom .btn {
+    padding: 0;
+}
+
 .Control .wanted-list {
-    list-style-type: none;
-    margin: 0;
+    max-width: 10em; /* ship names and counts should not be too far */
+    margin: 0 auto;
     padding: 0;
     text-align: justify;
+    list-style-type: none;
 }
 .Control .wanted-list li {
     width: 100%;
@@ -83,4 +86,10 @@
 .Control p {
     text-align: left;
     text-transform: none;
+}
+
+@media screen and (max-width: 992px) {
+    .Control .bottom {
+        top: 8px;
+    }
 }

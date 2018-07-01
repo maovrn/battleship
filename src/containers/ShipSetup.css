@@ -1,9 +1,9 @@
 .ShipSetup {
     text-align: left;
+    grid-column: 1 / span 2;
+    grid-row: 1;
 }
 .ShipSetup .grid {
-    width: 500px;
-    height: 500px;
     border: 1px solid #333;
     background: #ffffff;
 }
@@ -35,4 +35,8 @@
 }
 .ShipSetup .ship-frame.invalid {
     stroke: #fd4545;
+}
+
+@media screen and (max-width: 992px) {
+
 }

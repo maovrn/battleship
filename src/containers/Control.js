@@ -73,7 +73,7 @@ class Control extends Component {
                 {this.props.gameState === 'play' &&
                     this.renderPlayState()
                 }
-                <div className="buttons">
+                <div className="bottom">
                     <div className="btn cancel">
                         <a  onClick={actions.cancelGame}>Quit the game</a>
                     </div>

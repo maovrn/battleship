@@ -17,7 +17,7 @@ import './Battleground.css';
 
 class Battleground extends Component {
 
-    scale = 50; // magic constant according CSS styles (cell width or height in pixels)
+    scale = 48; // magic constant according CSS styles (cell width or height in pixels)
 
     componentDidMount() {
         // Redux reducer on SHOT action to calculate shot results

@@ -32,8 +32,10 @@ class Game extends Component {
         } else if (this.props.gameState === 'setup') {
             return (
                 <div className="Game">
-                    <Control/>
-                    <ShipSetup/>
+                    <div className="panels">
+                        <Control/>
+                        <ShipSetup/>
+                    </div>
                 </div>
             )
         } else {
