@@ -22,13 +22,6 @@ class ShipSetup extends Component {
     scale = 50; // magic constant according CSS styles (cell width or height in pixels)
 
     componentDidMount() {
-        store.registerReducer('SHIP_MOVE', function(state, action){
-            let ship = state.ships[action.ship.id];
-            ship.x += action.dx;
-            ship.y += action.dy;
-            return Object.assign({}, state);
-        });
-
         store.registerReducer('SHIP_UPDATE', function(state, action){
             let ships = utils.cloneObjects(state.ships);
             Object.assign(ships[action.ship.id], action.ship);
