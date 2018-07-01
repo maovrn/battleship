@@ -57,7 +57,7 @@ class ShipSetup extends Component {
     moveShip = (ship, dx, dy) => {
         ship.x += dx;
         ship.y += dy;
-        ship.invalid = false; // position is validated before the dropping
+        ship.invalid = false; // position is validated just before the dropping
         actions.updateShip(ship);
     }
 

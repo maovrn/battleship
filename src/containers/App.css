@@ -46,6 +46,12 @@
     text-decoration: none;
 }
 
+.App .btn[disabled] {
+    cursor: not-allowed;
+    filter: alpha(opacity=65);
+    box-shadow: none;
+    opacity: .65;
+}
 .App .btn-default {
     color: #fff;
     background-color: #337ab7;
