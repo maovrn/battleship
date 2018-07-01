@@ -52,20 +52,29 @@ class ShipSetup extends Component {
         return ret;
     }
 
-    validShipMovement = (ship, dx, dy) => {
-        // validate ship position along with the others ships
+    // validate ship position along with the others ships, do not update current state.
+    validateShipMovement = (ship, dx, dy) => {
         let ships = utils.cloneObjects(this.props.ships);
         ships[ship.id].x += dx;
         ships[ship.id].y += dy;
         return game.validShipPlacement(ships);
     }
 
+    // update ship position - throw SHIP_UPDATE action.
+    moveShip = (ship, dx, dy) => {
+        ship.x += dx;
+        ship.y += dy;
+        ship.invalid = false; // position is validated before the dropping
+        actions.updateShip(ship);
+    }
+
+    // rotate ship when user clicks a ship - throw SHIP_UPDATE action.
     click = (e) => {
         e.stopPropagation();
-        // throw SHIP_UPDATE action with rotated ship if user clicks a ship
         let id = Number.parseInt(e.target.getAttribute('data-id'), 10);
         if (Number.isInteger(id)) {
             let ship = game.rotateShip(this.props.ships[id]);
+            ship.invalid = !game.validShipPlacement(this.props.ships);
             actions.updateShip(ship);
         }
     }
@@ -78,8 +87,8 @@ class ShipSetup extends Component {
                       scale={this.scale}
                       draggable={true}
                       stickiness={0.1}
-                      validate={this.validShipMovement}
-                      moveShip={actions.moveShip}
+                      validate={this.validateShipMovement}
+                      moveShip={this.moveShip}
                 />
             ));
     }

@@ -24,6 +24,7 @@
     stroke-width: 2px;
     stroke: #4664fc;
     z-index: 99;
+    cursor: pointer;
 }
 .ShipSetup .ship-frame.draggable {
     cursor: move;
