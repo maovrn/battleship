@@ -2,7 +2,7 @@
  * Create Redux store with empty state. Provide methods to register reduces for the actions declared in actions.js
  *
  * Usage:
- * store.registerReducer('ACTION_NAME', function(state, action){ ...do something... }}
+ * store.registerReducer('ACTION_NAME', function(state, action){ ...do something... })
  **********************************************************************************************************************/
 
 import { createStore } from 'redux';
@@ -22,19 +22,19 @@ export const defaultReducer = function(state = initialState, action) {
     return Object.assign({}, state, newState);
 }
 
-const index = createStore(defaultReducer);
+const store = createStore(defaultReducer);
 
 
 // custom reducer registration map
-index.reducerMap = new Map();
+store.reducerMap = new Map();
 
 /**
  * Registration of custom reducer
  * @param actionType {String} - action.type on which reducer works
  * @param reducer - custom reducer function
  */
-index.registerReducer = (actionType, reducer) => {
-    index.reducerMap.set(actionType, reducer);
+store.registerReducer = (actionType, reducer) => {
+    store.reducerMap.set(actionType, reducer);
 }
 
 /**
@@ -45,13 +45,15 @@ index.registerReducer = (actionType, reducer) => {
  */
 export const commonReducer = function(state = initialState, action) {
     return (
-        index.reducerMap.has(action.type)
-            ? index.reducerMap.get(action.type)
+        store.reducerMap.has(action.type)
+            ? store.reducerMap.get(action.type)
             : defaultReducer
     )(state, action);
 }
 
-index.replaceReducer(commonReducer);
+store.replaceReducer(commonReducer);
 
+// Register middleware to log state updates
+// store.subscribe( () => console.log('Store state', store.getState()) );
 
-export default index;
+export default store;

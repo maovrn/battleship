@@ -6,7 +6,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actions from "../store/actions";
 import './Control.css';
-import * as game from "../game";
 
 
 class Control extends Component {
@@ -46,11 +45,6 @@ class Control extends Component {
         )
     }
 
-    play = (e) => {
-        let battle = game.generateBattleMatrixAndShips();
-        actions.startGame(battle);
-    }
-
     renderSetupState = () => {
         return (
             <div className="setup-state">
@@ -58,7 +52,7 @@ class Control extends Component {
                     <div className="label">SETUP YOUR FLEET</div>
                     <p>Drag and drop your ships to adjust their position. Click them to rotate. Click Play to start a battle.</p>
                     <br/>
-                    <button className="btn btn-default" onClick={this.play} disabled={this.props.playDisabled}>Play</button>
+                    <button className="btn btn-default" onClick={actions.startGame} disabled={this.props.playDisabled}>Play</button>
                 </div>
             </div>
         )
@@ -87,11 +81,11 @@ class Control extends Component {
 export default connect(state => {
     return {
         gameState: state.gameState,
-        playDisabled: state.ships.some(ship => ship.invalid),
-        shots:  state.shots || 0,
-        hits:   state.ships.reduce((hits, ship) => hits + ship.hits, 0),
-        wanted: state.ships
-            .filter(ship => ship.decks > ship.hits) // filter non-fired ships
-            .map(ship => ship.name)                 // extract names
+        playDisabled: state.player.ships.some(ship => ship.invalid),
+        shots:  state.player.shots,
+        hits:   state.enemy.ships.reduce((hits, ship) => hits + ship.hits, 0),
+        wanted: state.enemy.ships
+                    .filter(ship => ship.decks > ship.hits) // filter non-fired ships
+                    .map(ship => ship.name)                 // extract names
     }
 })(Control);

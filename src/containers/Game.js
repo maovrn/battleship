@@ -18,36 +18,39 @@ import Control from './Control';
 class Game extends Component {
 
     onStart = () => {
-        // init new game parameters
-        let battle = game.generateBattleMatrixAndShips();
-        //actions.startGame(battle);
+        // init new game parameters for the player and enemy
+        let battle = {
+            player: game.generateBattleMatrixAndShips(),
+            enemy:  game.generateBattleMatrixAndShips()
+        };
         actions.setupGame(battle);
     }
 
     render() {
-        if (this.props.gameState === 'welcome') {
+        if (this.props.screen === 'welcome') {
             return (
                 <Welcome onStart={this.onStart}/>
-            )
-        } else if (this.props.gameState === 'setup') {
-            return (
-                <div className="Game">
-                    <div className="panels">
-                        <Control/>
-                        <ShipSetup/>
-                    </div>
-                </div>
             )
         } else {
             return (
                 <div className="Game">
                     <div className="panels">
                         <Control/>
-                        <Battleground/>
+                        {this.props.screen === 'setup' && (
+                            <ShipSetup/>
+                        )}
+                        {this.props.screen !== 'setup' && (
+                            <Battleground/>
+                            /* TODO add Battleground for enemy here */
+                        )}
                     </div>
-                    {this.props.gameState === 'win' &&
+                    {this.props.screen === 'win' && (
                         <WinScreen onStart={this.onStart} shots={this.props.shots}/>
-                    }
+                    )}
+                    {this.props.screen === 'lost' && (
+                        /* TODO replace WinScreen to LostScreen */
+                        <WinScreen onStart={this.onStart} shots={this.props.shots}/>
+                    )}
                 </div>
             )
         }
@@ -56,8 +59,23 @@ class Game extends Component {
 }
 
 export default connect(state => {
+    let screen = state.gameState || 'welcome',
+        shots  = 0;
+
+    // check condition of game win or lost
+    if (state.gameState === 'play') {
+        if (game.isGameFinished(state.enemy.ships)) {
+            screen = 'win';
+            shots  = state.player.shots;
+        }
+        if (game.isGameFinished(state.player.ships)) {
+            screen = 'lost';
+            shots  = state.enemy.shots;
+        }
+    }
+
     return {
-        gameState: (state.gameState === 'play' && game.isGameWin(state.ships)) ? 'win' : state.gameState || 'welcome',
-        shots: state.shots
+        screen: screen,
+        shots:  shots
     }
 })(Game);

@@ -1,5 +1,5 @@
 /***********************************************************************************************************************
- * Battle area UI, includes clicks handler and shot result calculation.
+ * Battle area for the player - show enemy's matrix, includes clicks handler and shot result calculation.
  **********************************************************************************************************************/
 
 import React, { Component } from 'react';
@@ -20,26 +20,27 @@ class Battleground extends Component {
     scale = 48; // magic constant according CSS styles (cell width or height in pixels)
 
     componentDidMount() {
-        // Redux reducer on SHOT action to calculate shot results
-        store.registerReducer('SHOT', function(state, action){
-            state.shots++;
-            let cheque = game.checkPoint(state.matrix, action.x, action.y);
+        // Redux reducer on SHOT action of player to calculate shot results at enemy's matrix
+        store.registerReducer('PLAYER_SHOT', function(state, action){
+            let newState = Object.assign({}, state);
+            newState.player.shots++;
+            let cheque = game.checkPoint(newState.enemy.matrix, action.x, action.y);
+            newState.enemy.matrix = cheque.matrix;
             if (cheque.hit) {
-                game.findShip(state.ships, action.x, action.y).hits++;
+                game.findShip(newState.enemy.ships, action.x, action.y).hits++;
             }
-
-            return Object.assign({}, state, {matrix: cheque.matrix});
+            return newState;
         });
     }
 
-    click = (e) => {
+    shoot = (e) => {
         e.stopPropagation();
         // throw SHOT action if user clicks non-checked cell
         let x = Number.parseInt(e.target.getAttribute('data-x'), 10),
             y = Number.parseInt(e.target.getAttribute('data-y'), 10);
         if (Number.isInteger(x) && Number.isInteger(y)) {
             if (!game.isPointChecked(this.props.matrix, x, y)) {
-                actions.shoot(x, y);
+                actions.playerShoot(x, y);
             }
         }
     }
@@ -77,7 +78,7 @@ class Battleground extends Component {
         return (
             <div className="Battleground">
                 <GridBack cols={game.maxX} rows={game.maxY}>
-                    <Grid onClick={this.click} width={game.maxX * this.scale} height={game.maxY * this.scale}>
+                    <Grid onClick={this.shoot} width={game.maxX * this.scale} height={game.maxY * this.scale}>
                         {this.renderCells()}
                         {this.renderShips()}
                     </Grid>
@@ -90,7 +91,7 @@ class Battleground extends Component {
 
 export default connect(state => {
     return {
-        matrix: state.matrix || [],
-        ships:  state.ships || []
+        matrix: state.enemy.matrix || [],
+        ships:  state.enemy.ships  || []
     }
 })(Battleground);

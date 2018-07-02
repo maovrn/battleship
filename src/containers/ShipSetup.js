@@ -22,10 +22,14 @@ class ShipSetup extends Component {
     scale = 48; // magic constant according CSS styles (cell width or height in pixels)
 
     componentDidMount() {
-        store.registerReducer('SHIP_UPDATE', function(state, action){
-            let ships = utils.cloneObjects(state.ships);
+        store.registerReducer('PLAYER_SHIP_UPDATE', function(state, action){
+            let ships = utils.cloneObjects(state.player.ships);
             Object.assign(ships[action.ship.id], action.ship);
-            return Object.assign({}, state, {ships: ships});
+            let player = {
+                ships:  ships,
+                matrix: game.generateMatrixByShips(ships)
+            }
+            return Object.assign({}, state, {player: player});
         });
     }
 
@@ -45,33 +49,6 @@ class ShipSetup extends Component {
         return ret;
     }
 
-    // validate ship position along with the others ships, do not update current state.
-    validateShipMovement = (ship, dx, dy) => {
-        let ships = utils.cloneObjects(this.props.ships);
-        ships[ship.id].x += dx;
-        ships[ship.id].y += dy;
-        return game.validShipPlacement(ships);
-    }
-
-    // update ship position - throw SHIP_UPDATE action.
-    moveShip = (ship, dx, dy) => {
-        ship.x += dx;
-        ship.y += dy;
-        ship.invalid = false; // position is validated just before the dropping
-        actions.updateShip(ship);
-    }
-
-    // rotate ship when user clicks a ship - throw SHIP_UPDATE action.
-    click = (e) => {
-        e.stopPropagation();
-        let id = Number.parseInt(e.target.getAttribute('data-id'), 10);
-        if (Number.isInteger(id)) {
-            let ship = game.rotateShip(this.props.ships[id]);
-            ship.invalid = !game.validShipPlacement(this.props.ships);
-            actions.updateShip(ship);
-        }
-    }
-
     renderShips = () => {
         return this.props.ships
             .map(ship => (
@@ -86,11 +63,38 @@ class ShipSetup extends Component {
             ));
     }
 
+    // validate ship position along with the others ships, do not update current state.
+    validateShipMovement = (ship, dx, dy) => {
+        let ships = utils.cloneObjects(this.props.ships);
+        ships[ship.id].x += dx;
+        ships[ship.id].y += dy;
+        return game.validShipPlacement(ships);
+    }
+
+    // update ship position - throw SHIP_UPDATE action.
+    moveShip = (ship, dx, dy) => {
+        ship.x += dx;
+        ship.y += dy;
+        ship.invalid = false; // position is validated just before the dropping
+        actions.updatePlayerShip(ship);
+    }
+
+    // rotate ship when user clicks a ship - throw SHIP_UPDATE action.
+    rotateShip = (e) => {
+        e.stopPropagation();
+        let id = Number.parseInt(e.target.getAttribute('data-id'), 10);
+        if (Number.isInteger(id)) {
+            let ship = game.rotateShip(this.props.ships[id]);
+            ship.invalid = !game.validShipPlacement(this.props.ships);
+            actions.updatePlayerShip(ship);
+        }
+    }
+
     render() {
         return (
             <div className="ShipSetup">
                 <GridBack cols={game.maxX} rows={game.maxY}>
-                    <Grid onClick={this.click} width={game.maxX * this.scale} height={game.maxY * this.scale}>
+                    <Grid onClick={this.rotateShip} width={game.maxX * this.scale} height={game.maxY * this.scale}>
                         {this.renderCells()}
                         {this.renderShips()}
                     </Grid>
@@ -104,7 +108,7 @@ class ShipSetup extends Component {
 
 export default connect(state => {
     return {
-        matrix: state.matrix || [],
-        ships:  state.ships || []
+        matrix: state.player.matrix || [],
+        ships:  state.player.ships  || []
     }
 })(ShipSetup);

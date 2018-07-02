@@ -188,9 +188,26 @@ export function isPointChecked (mtrx, x, y) {
  * @param ships {Array} - array of ships of the battle
  * @returns {boolean} - return true if the game is finished
  */
-export function isGameWin (ships) {
+export function isGameFinished (ships) {
     return !ships.some((ship) => ship.decks > ship.hits);
 }
+
+
+/**
+ * Return matrix built by ships provided
+ * @param ships {Array} - array of ships of the battle
+ * @returns {Array}
+ */
+export function generateMatrixByShips (ships) {
+    let mtrx = matrix.generate(maxX, maxY);
+    ships.forEach(ship => {
+        mtrx = removeDoubleTouchSign(
+            matrix.apply(mtrx, ship.matrix, ship.x, ship.y)
+        );
+    });
+    return mtrx;
+}
+
 
 /**
  * Check position of all ships provided is valid.
@@ -198,13 +215,7 @@ export function isGameWin (ships) {
  * @returns {boolean} - return true if position is correct
  */
 export function validShipPlacement (ships) {
-    let bg = matrix.generate(maxX, maxY);
-    ships.forEach(ship => {
-        bg = removeDoubleTouchSign(
-            matrix.apply(bg, ship.matrix, ship.x, ship.y)
-        );
-    });
-    return validPlacement(bg, ships);
+    return validPlacement(generateMatrixByShips(ships), ships);
 }
 
 

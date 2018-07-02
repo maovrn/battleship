@@ -4,44 +4,58 @@
 import store from '.';
 
 export function setupGame (params) {
+    // init whole Redux store data
     store.dispatch({
         type: 'GAME_SETUP',
         gameState: 'setup',
-        matrix: params.matrix,
-        ships:  params.ships,
-        shots:  0
+        player: {
+            matrix: params.player.matrix,
+            ships:  params.player.ships,
+            shots:  0
+        },
+        enemy: {
+            matrix: params.enemy.matrix,
+            ships:  params.enemy.ships,
+            shots:  0
+        }
     });
 }
 
-export function startGame (params) {
+export function startGame () {
     store.dispatch({
         type: 'GAME_START',
-        gameState: 'play',
-        matrix: params.matrix,
-        ships:  params.ships,
-        shots:  0
+        gameState: 'play'
     });
 }
 
 export function cancelGame () {
+    // reset store data
     store.dispatch({
         type: 'GAME_CANCEL',
         gameState: 'welcome',
-        matrix: [],
-        ships: []
+        player: {
+            matrix: [],
+            ships:  [],
+            shots:  0
+        },
+        enemy: {
+            matrix: [],
+            ships:  [],
+            shots:  0
+        }
     });
 }
 
-export function shoot (x, y) {
+export function playerShoot (x, y) {
     store.dispatch({
-        type: 'SHOT',
+        type: 'PLAYER_SHOT',
         x, y
     });
 }
 
-export function updateShip (ship) {
+export function updatePlayerShip (ship) {
     store.dispatch({
-        type: 'SHIP_UPDATE',
+        type: 'PLAYER_SHIP_UPDATE',
         ship
     });
 }
