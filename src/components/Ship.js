@@ -37,8 +37,8 @@ class Ship extends Component {
         let cls = 'ship-frame'
             + (this.props.draggable  ? ' draggable' : '')
             + (this.state.dragging   ? ' dragging' : '')
-            + (!this.state.valid     ? ' invalid' : '')
-            + (this.props.ship.invalid ? ' invalid' : '');
+            + (this.props.ship.invalid || !this.state.valid ? ' invalid' : '')
+            + (this.props.ship.decks === this.props.ship.hits ? ' lost' : '');
 
         let points = this.props.ship.frame.reduce((acc, point) => {
             let [x, y] = point;

@@ -27,6 +27,19 @@ class Control extends Component {
     renderPlayState = () => {
         return (
             <div className="play-state">
+                {this.props.turn && (
+                    <div className="field">
+                        <div className="label">YOURS TURN</div>
+                        <p>Click any cell to check if enemy's ship is there.</p>
+                    </div>
+                )}
+                {!this.props.turn && (
+                    <div className="field">
+                        <div className="label">ENEMY'S TURN</div>
+                        <p>Pray until the enemy makes their insidious shot.</p>
+                    </div>
+                )}
+
                 <div className="field">
                     <div className="label">SHOTS</div>
                     <div className="value">{this.props.shots}</div>
@@ -61,10 +74,10 @@ class Control extends Component {
     render() {
         return (
             <div className="Control">
-                {this.props.gameState === 'setup' &&
+                {this.props.screen === 'setup' &&
                     this.renderSetupState()
                 }
-                {this.props.gameState === 'play' &&
+                {this.props.screen === 'play' &&
                     this.renderPlayState()
                 }
                 <div className="bottom">
@@ -78,14 +91,29 @@ class Control extends Component {
 
 }
 
+function calcPlayDisabled (ships) {
+    return ships.some(ship => ship.invalid);
+}
+
+function calcHits (ships) {
+    return ships.reduce((hits, ship) => hits + ship.hits, 0);
+}
+
+function calcWanted (ships) {
+    return ships
+        .filter(ship => ship.decks > ship.hits) // filter non-fired ships
+        .map(ship => ship.name);                // extract names
+}
+
 export default connect(state => {
+    let screen = state.gameState,
+        turn   = state.turn;
     return {
-        gameState: state.gameState,
-        playDisabled: state.player.ships.some(ship => ship.invalid),
-        shots:  state.player.shots,
-        hits:   state.enemy.ships.reduce((hits, ship) => hits + ship.hits, 0),
-        wanted: state.enemy.ships
-                    .filter(ship => ship.decks > ship.hits) // filter non-fired ships
-                    .map(ship => ship.name)                 // extract names
+        screen:       screen,
+        turn:         turn,
+        playDisabled: screen === 'setup' && calcPlayDisabled(state.player.ships),
+        shots:        screen === 'play'  && (turn ? state.player.shots : state.enemy.shots),
+        hits:         screen === 'play'  && (turn ? calcHits(state.enemy.ships)   : calcHits(state.player.ships)),
+        wanted:       screen === 'play'  && (turn ? calcWanted(state.enemy.ships) : calcWanted(state.player.ships))
     }
 })(Control);

@@ -34,21 +34,45 @@
     background: #ffffff;
 }
 .EnemyBattleground .grid .cell {
-    fill: transparent;
+    fill: #d8f6ff;
     stroke-width: 1px;
     stroke: #7bafdc;
     cursor: default;
     z-index: 9;
 }
 
+@keyframes EnemyMissAppears {
+    from {fill: #d8f6ff;}
+    to {fill: #ffffff;}
+}
+.EnemyBattleground .grid .cell.miss {
+    fill: #ffffff;
+    animation-name: EnemyMissAppears;
+    animation-duration: 0.3s;
+}
+
+@keyframes EnemyHitAppears {
+    from {fill: #d8f6ff;}
+    to {fill: #ffb2b2;}
+}
+.EnemyBattleground .grid .cell.hit {
+    fill: #ffb2b2;
+    animation-name: EnemyHitAppears;
+    animation-duration: 0.3s;
+}
+
 .EnemyBattleground .ship-frame {
-    fill: #d8f6ff;
+    fill: transparent;
     stroke-width: 2px;
     stroke: #4664fc;
     z-index: 99;
     cursor: default;
 }
 .EnemyBattleground .ship-frame.invalid {
+    stroke: #fd4545;
+}
+.EnemyBattleground .ship-frame.lost {
+    fill: #ffb2b2;
     stroke: #fd4545;
 }
 

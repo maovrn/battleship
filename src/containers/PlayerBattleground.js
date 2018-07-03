@@ -28,7 +28,7 @@ class PlayerBattleground extends Component {
             player.shots++;
             enemy.matrix = cheque.matrix;
             enemy.ships  = cheque.ships;
-            return Object.assign({}, state, {player: player, enemy: enemy, turn: !state.turn});
+            return Object.assign({}, state, {player: player, enemy: enemy, turn: cheque.hit});
         });
     }
 

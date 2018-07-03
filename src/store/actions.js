@@ -67,3 +67,5 @@ export function enemyShoot (x, y) {
         x, y
     });
 }
+
+window.enemyShoot = enemyShoot;
