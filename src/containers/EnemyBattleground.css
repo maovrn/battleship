@@ -1,6 +1,6 @@
 @keyframes EnemyBattlegroundAppears {
     0%   {opacity: 0;}
-    50%  {opacity: 0;}
+    85%  {opacity: 0;}
     100% {opacity: 1;}
 }
 
@@ -14,19 +14,19 @@
     pointer-events: none;
     user-select: none;
     animation-name: EnemyBattlegroundAppears;
-    animation-duration: 0.9s;
+    animation-duration: 1.2s;
 }
 
 @keyframes EnemyBattlegroundHides {
     0%   {opacity: 1;}
-    50%  {opacity: 1;}
+    85%  {opacity: 1;}
     100% {opacity: 0;}
 }
 
 .EnemyBattleground.hidden {
     opacity: 0;
     animation-name: EnemyBattlegroundHides;
-    animation-duration: 0.9s;
+    animation-duration: 1.2s;
 }
 
 .EnemyBattleground .grid {
@@ -42,23 +42,25 @@
 }
 
 @keyframes EnemyMissAppears {
-    from {fill: #d8f6ff;}
-    to {fill: #ffffff;}
+    0%   {fill: #d8f6ff;}
+    40%  {fill: #fff8b2}
+    100% {fill: #ffffff;}
 }
 .EnemyBattleground .grid .cell.miss {
     fill: #ffffff;
     animation-name: EnemyMissAppears;
-    animation-duration: 0.3s;
+    animation-duration: 0.5s;
 }
 
 @keyframes EnemyHitAppears {
-    from {fill: #d8f6ff;}
-    to {fill: #ffb2b2;}
+    0%   {fill: #d8f6ff;}
+    40%  {fill: #fff8b2}
+    100% {fill: #ffb2b2;}
 }
 .EnemyBattleground .grid .cell.hit {
     fill: #ffb2b2;
     animation-name: EnemyHitAppears;
-    animation-duration: 0.3s;
+    animation-duration: 0.5s;
 }
 
 .EnemyBattleground .ship-frame {

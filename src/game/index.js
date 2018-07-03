@@ -121,9 +121,10 @@ export function generateBattleMatrixAndShips () {
             // generate random x, y
             // then apply ship.matrix on battle ground
             // until the coordinates suite all the rules
+            let bg_new = [];
             do {
                 setShipRandomXY(ship);
-                var bg_new = matrix.apply(bg, ship.matrix, ship.x, ship.y);
+                bg_new = matrix.apply(bg, ship.matrix, ship.x, ship.y);
             } while (!validPlacement(bg_new, ships));
 
             bg = removeDoubleTouchSign(bg_new);
@@ -237,4 +238,18 @@ export function rotateShip (ship) {
     ship.matrix = sh.variants[vn];
     ship.frame  = sh.frames[vn];
     return ship;
+}
+
+
+export function calcEnemyShot (mtrx, ships) {
+    let x, y, ok;
+
+    do {
+        x = utils.getRandomInt(0, maxX);
+        y = utils.getRandomInt(0, maxY);
+
+        ok = !isPointChecked(mtrx, x, y);
+    } while (!ok);
+
+    return {x, y}
 }

@@ -1,6 +1,6 @@
 @keyframes PlayerBattlegroundAppears {
     0% {opacity: 0;}
-    50% {opacity: 0;}
+    85% {opacity: 0;}
     100% {opacity: 1;}
 }
 
@@ -11,7 +11,7 @@
     display: block;
     opacity: 1;
     animation-name: PlayerBattlegroundAppears;
-    animation-duration: 0.9s;
+    animation-duration: 1.2s;
 
     position: absolute; /* TODO fix for mobile view */
     top: 12px;
@@ -20,7 +20,7 @@
 
 @keyframes PlayerBattlegroundHides {
     0% {opacity: 1;}
-    50% {opacity: 1;}
+    85% {opacity: 1;}
     100% {opacity: 0;}
 }
 
@@ -28,7 +28,7 @@
     opacity: 0;
     z-index: 1;
     animation-name: PlayerBattlegroundHides;
-    animation-duration: 0.9s;
+    animation-duration: 1.2s;
 }
 
 .PlayerBattleground .grid {

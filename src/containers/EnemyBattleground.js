@@ -32,9 +32,21 @@ class EnemyBattleground extends Component {
         });
     }
 
+    componentWillReceiveProps (props) {
+        if (!props.turn) {
+            // enemy's turn
+            setTimeout(function() {
+                let point = game.calcEnemyShot(props.matrix, props.ships);
+                console.log(point);
+                actions.enemyShoot(point.x, point.y);
+            }.bind(this), 1500) // After 1.5 second, make a shot
+        }
+
+    }
+
     click = (e) => {
         e.stopPropagation();
-        // nothing to do now
+        // nothing to do at enemy's battleground
     }
 
     renderCells = () => {

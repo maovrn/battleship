@@ -29,7 +29,7 @@ class Control extends Component {
             <div className="play-state">
                 {this.props.turn && (
                     <div className="field">
-                        <div className="label">YOURS TURN</div>
+                        <div className="label">YOUR TURN</div>
                         <p>Click any cell to check if enemy's ship is there.</p>
                     </div>
                 )}
