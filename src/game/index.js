@@ -154,20 +154,25 @@ export function findShip (ships, x, y) {
 
 /**
  * Check point on matrix provided - if it's hit or miss.
- * Return new copy of the matrix with a mark checked, and a boolean result of cheque.
- * @param mtrx {Array} - matrix to check
+ * In case it's hit, increment hits count of the appropriate ship from the ships provided.
+ * Return new copy of the matrix and ships, and a boolean result of cheque.
+ * @param mtrx {Array}  - matrix to check
+ * @param ships {Array} - array of ships
  * @param x {Integer}  - x coordinate of the point
  * @param y {Integer}  - y coordinate of the point
  * @returns {{matrix: Array, hit: boolean}}
  */
-export function checkPoint (mtrx, x, y) {
+export function checkPoint (mtrx, ships, x, y) {
     let bg = matrix.clone(mtrx),
+        sh = utils.cloneObjects(ships),
         hit = (mtrx[y][x] === sign.deck);
 
     bg[y][x] = (hit ? sign.hit : sign.miss);
+    if (hit) findShip(sh, x, y).hits++;
     return {
         matrix: bg,
-        hit: hit
+        ships:  sh,
+        hit:    hit
     }
 }
 

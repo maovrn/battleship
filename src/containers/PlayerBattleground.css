@@ -1,13 +1,13 @@
-.Battleground {
+.PlayerBattleground {
     text-align: left;
     grid-column: 1 / span 2;
     grid-row: 1;
 }
-.Battleground .grid {
+.PlayerBattleground .grid {
     border: 1px solid #333;
     background: #d8f6ff;
 }
-.Battleground .grid .cell {
+.PlayerBattleground .grid .cell {
     fill: transparent;
     stroke-width: 1px;
     stroke: #7bafdc;
@@ -15,7 +15,7 @@
     z-index: 9;
 }
 
-.Battleground .grid .cell:hover {
+.PlayerBattleground .grid .cell:hover {
     fill: rgb(50,50,50);
     opacity: 0.25;
 }
@@ -24,13 +24,13 @@
     from {fill: #d8f6ff;}
     to {fill: #ffffff;}
 }
-.Battleground .grid .cell.miss {
+.PlayerBattleground .grid .cell.miss {
     cursor: default;
     fill: #ffffff;
     animation-name: MissAppears;
     animation-duration: 0.3s;
 }
-.Battleground .grid .cell.miss:hover {
+.PlayerBattleground .grid .cell.miss:hover {
     opacity: 1;
 }
 
@@ -38,13 +38,13 @@
     from {fill: #d8f6ff;}
     to {fill: #ffb2b2;}
 }
-.Battleground .grid .cell.hit {
+.PlayerBattleground .grid .cell.hit {
     cursor: default;
     fill: #ffb2b2;
     animation-name: HitAppears;
     animation-duration: 0.3s;
 }
-.Battleground .grid .cell.hit:hover {
+.PlayerBattleground .grid .cell.hit:hover {
     opacity: 1;
 }
 
@@ -53,7 +53,7 @@
     to   {opacity: 1;}
 }
 
-.Battleground .grid .ship-frame {
+.PlayerBattleground .grid .ship-frame {
     fill: #ffb2b2;
     stroke-width: 2px;
     stroke: #fd4545;

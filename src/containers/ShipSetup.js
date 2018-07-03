@@ -23,12 +23,10 @@ class ShipSetup extends Component {
 
     componentDidMount() {
         store.registerReducer('PLAYER_SHIP_UPDATE', function(state, action){
-            let ships = utils.cloneObjects(state.player.ships);
-            Object.assign(ships[action.ship.id], action.ship);
-            let player = {
-                ships:  ships,
-                matrix: game.generateMatrixByShips(ships)
-            }
+            let player = Object.assign({}, state.player);
+            player.ships = utils.cloneObjects(player.ships);
+            Object.assign(player.ships[action.ship.id], action.ship);
+            player.matrix = game.generateMatrixByShips(player.ships);
             return Object.assign({}, state, {player: player});
         });
     }

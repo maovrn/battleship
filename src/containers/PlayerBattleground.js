@@ -12,24 +12,23 @@ import GridBack from '../components/GridBack';
 import Grid from '../components/Grid';
 import Cell from '../components/Cell';
 import Ship from '../components/Ship';
-import './Battleground.css';
+import './PlayerBattleground.css';
 
 
-class Battleground extends Component {
+class PlayerBattleground extends Component {
 
     scale = 48; // magic constant according CSS styles (cell width or height in pixels)
 
     componentDidMount() {
         // Redux reducer on SHOT action of player to calculate shot results at enemy's matrix
         store.registerReducer('PLAYER_SHOT', function(state, action){
-            let newState = Object.assign({}, state);
-            newState.player.shots++;
-            let cheque = game.checkPoint(newState.enemy.matrix, action.x, action.y);
-            newState.enemy.matrix = cheque.matrix;
-            if (cheque.hit) {
-                game.findShip(newState.enemy.ships, action.x, action.y).hits++;
-            }
-            return newState;
+            let player = Object.assign({}, state.player);
+            let enemy  = Object.assign({}, state.enemy);
+            let cheque = game.checkPoint(enemy.matrix, enemy.ships, action.x, action.y);
+            player.shots++;
+            enemy.matrix = cheque.matrix;
+            enemy.ships  = cheque.ships;
+            return Object.assign({}, state, {player: player, enemy: enemy});
         });
     }
 
@@ -76,7 +75,7 @@ class Battleground extends Component {
 
     render() {
         return (
-            <div className="Battleground">
+            <div className="PlayerBattleground">
                 <GridBack cols={game.maxX} rows={game.maxY}>
                     <Grid onClick={this.shoot} width={game.maxX * this.scale} height={game.maxY * this.scale}>
                         {this.renderCells()}
@@ -94,4 +93,4 @@ export default connect(state => {
         matrix: state.enemy.matrix || [],
         ships:  state.enemy.ships  || []
     }
-})(Battleground);
+})(PlayerBattleground);

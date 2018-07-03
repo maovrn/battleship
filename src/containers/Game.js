@@ -11,7 +11,7 @@ import './Game.css';
 import Welcome from '../components/Welcome';
 import WinScreen from '../components/WinScreen';
 import ShipSetup from './ShipSetup';
-import Battleground from './Battleground';
+import PlayerBattleground from './PlayerBattleground';
 import Control from './Control';
 
 
@@ -40,7 +40,7 @@ class Game extends Component {
                             <ShipSetup/>
                         )}
                         {this.props.screen !== 'setup' && (
-                            <Battleground/>
+                            <PlayerBattleground/>
                             /* TODO add Battleground for enemy here */
                         )}
                     </div>
