@@ -8,6 +8,7 @@ export function setupGame (params) {
     store.dispatch({
         type: 'GAME_SETUP',
         gameState: 'setup',
+        turn: true,  /* true - player's turn, false - enemy's turn */
         player: {
             matrix: params.player.matrix,
             ships:  params.player.ships,
@@ -46,6 +47,13 @@ export function cancelGame () {
     });
 }
 
+export function updatePlayerShip (ship) {
+    store.dispatch({
+        type: 'PLAYER_SHIP_UPDATE',
+        ship
+    });
+}
+
 export function playerShoot (x, y) {
     store.dispatch({
         type: 'PLAYER_SHOT',
@@ -53,9 +61,9 @@ export function playerShoot (x, y) {
     });
 }
 
-export function updatePlayerShip (ship) {
+export function enemyShoot (x, y) {
     store.dispatch({
-        type: 'PLAYER_SHIP_UPDATE',
-        ship
+        type: 'ENEMY_SHOT',
+        x, y
     });
 }

@@ -54,6 +54,6 @@ export const commonReducer = function(state = initialState, action) {
 store.replaceReducer(commonReducer);
 
 // Register middleware to log state updates
-// store.subscribe( () => console.log('Store state', store.getState()) );
+store.subscribe( () => console.log('Store state', store.getState()) );
 
 export default store;

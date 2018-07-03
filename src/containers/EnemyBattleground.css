@@ -1,0 +1,57 @@
+@keyframes EnemyBattlegroundAppears {
+    0%   {opacity: 0;}
+    50%  {opacity: 0;}
+    100% {opacity: 1;}
+}
+
+.EnemyBattleground {
+    text-align: left;
+    grid-column: 1 / span 2;
+    grid-row: 1;
+    display: block;
+    opacity: 1;
+    z-index: 3;
+    pointer-events: none;
+    user-select: none;
+    animation-name: EnemyBattlegroundAppears;
+    animation-duration: 0.9s;
+}
+
+@keyframes EnemyBattlegroundHides {
+    0%   {opacity: 1;}
+    50%  {opacity: 1;}
+    100% {opacity: 0;}
+}
+
+.EnemyBattleground.hidden {
+    opacity: 0;
+    animation-name: EnemyBattlegroundHides;
+    animation-duration: 0.9s;
+}
+
+.EnemyBattleground .grid {
+    border: 1px solid #333;
+    background: #ffffff;
+}
+.EnemyBattleground .grid .cell {
+    fill: transparent;
+    stroke-width: 1px;
+    stroke: #7bafdc;
+    cursor: default;
+    z-index: 9;
+}
+
+.EnemyBattleground .ship-frame {
+    fill: #d8f6ff;
+    stroke-width: 2px;
+    stroke: #4664fc;
+    z-index: 99;
+    cursor: default;
+}
+.EnemyBattleground .ship-frame.invalid {
+    stroke: #fd4545;
+}
+
+@media screen and (max-width: 992px) {
+
+}

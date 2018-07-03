@@ -1,8 +1,36 @@
+@keyframes PlayerBattlegroundAppears {
+    0% {opacity: 0;}
+    50% {opacity: 0;}
+    100% {opacity: 1;}
+}
+
 .PlayerBattleground {
     text-align: left;
     grid-column: 1 / span 2;
     grid-row: 1;
+    display: block;
+    opacity: 1;
+    animation-name: PlayerBattlegroundAppears;
+    animation-duration: 0.9s;
+
+    position: absolute; /* TODO fix for mobile view */
+    top: 12px;
+    z-index: 5;
 }
+
+@keyframes PlayerBattlegroundHides {
+    0% {opacity: 1;}
+    50% {opacity: 1;}
+    100% {opacity: 0;}
+}
+
+.PlayerBattleground.hidden {
+    opacity: 0;
+    z-index: 1;
+    animation-name: PlayerBattlegroundHides;
+    animation-duration: 0.9s;
+}
+
 .PlayerBattleground .grid {
     border: 1px solid #333;
     background: #d8f6ff;
@@ -14,6 +42,10 @@
     cursor: pointer;
     z-index: 9;
 }
+.PlayerBattleground.hidden .grid .cell {
+    cursor: default;
+}
+
 
 .PlayerBattleground .grid .cell:hover {
     fill: rgb(50,50,50);

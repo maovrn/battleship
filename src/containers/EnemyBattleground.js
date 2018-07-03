@@ -1,5 +1,5 @@
 /***********************************************************************************************************************
- * Battle area for the player - show enemy's matrix, includes clicks handler and shot result calculation.
+ * Battle area for the enemy - show player's matrix with the ships opened. Mark enemy's shots.
  **********************************************************************************************************************/
 
 import React, { Component } from 'react';
@@ -12,38 +12,29 @@ import GridBack from '../components/GridBack';
 import Grid from '../components/Grid';
 import Cell from '../components/Cell';
 import Ship from '../components/Ship';
-import './PlayerBattleground.css';
+import './EnemyBattleground.css';
 
 
-class PlayerBattleground extends Component {
+class EnemyBattleground extends Component {
 
     scale = 48; // magic constant according CSS styles (cell width or height in pixels)
 
     componentDidMount() {
         // Redux reducer on SHOT action of player to calculate shot results at enemy's matrix
-        store.registerReducer('PLAYER_SHOT', function(state, action){
+        store.registerReducer('ENEMY_SHOT', function(state, action){
             let player = Object.assign({}, state.player);
             let enemy  = Object.assign({}, state.enemy);
-            let cheque = game.checkPoint(enemy.matrix, enemy.ships, action.x, action.y);
-            player.shots++;
-            enemy.matrix = cheque.matrix;
-            enemy.ships  = cheque.ships;
+            let cheque = game.checkPoint(player.matrix, player.ships, action.x, action.y);
+            enemy.shots++;
+            player.matrix = cheque.matrix;
+            player.ships  = cheque.ships;
             return Object.assign({}, state, {player: player, enemy: enemy, turn: !state.turn});
         });
     }
 
-    shoot = (e) => {
+    click = (e) => {
         e.stopPropagation();
-        if (!this.props.turn) return false;
-
-        // throw SHOT action if user clicks non-checked cell
-        let x = Number.parseInt(e.target.getAttribute('data-x'), 10),
-            y = Number.parseInt(e.target.getAttribute('data-y'), 10);
-        if (Number.isInteger(x) && Number.isInteger(y)) {
-            if (!game.isPointChecked(this.props.matrix, x, y)) {
-                actions.playerShoot(x, y);
-            }
-        }
+        // nothing to do now
     }
 
     renderCells = () => {
@@ -65,9 +56,8 @@ class PlayerBattleground extends Component {
 
     renderShips = () => {
         return this.props.ships
-            .filter(ship => ship.decks === ship.hits) // render only the ships that have been fired
             .map(ship => (
-                <Ship key={'enemy_ship_'+ship.id}
+                <Ship key={'player_ship_'+ship.id}
                       ship={ship}
                       scale={this.scale}
                       draggable={false}
@@ -77,9 +67,9 @@ class PlayerBattleground extends Component {
 
     render() {
         return (
-            <div className={"PlayerBattleground" + (this.props.turn ? '' : ' hidden')}>
+            <div className={"EnemyBattleground" + (this.props.turn ? ' hidden' : '')}>
                 <GridBack cols={game.maxX} rows={game.maxY}>
-                    <Grid onClick={this.shoot} width={game.maxX * this.scale} height={game.maxY * this.scale}>
+                    <Grid onClick={this.click} width={game.maxX * this.scale} height={game.maxY * this.scale}>
                         {this.renderCells()}
                         {this.renderShips()}
                     </Grid>
@@ -92,8 +82,8 @@ class PlayerBattleground extends Component {
 
 export default connect(state => {
     return {
-        matrix: state.enemy.matrix || [],
-        ships:  state.enemy.ships  || [],
+        matrix: state.player.matrix || [],
+        ships:  state.player.ships  || [],
         turn:   state.turn
     }
-})(PlayerBattleground);
+})(EnemyBattleground);
