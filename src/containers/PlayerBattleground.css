@@ -1,0 +1,96 @@
+@keyframes PlayerBattlegroundAppears {
+    0% {opacity: 0;}
+    85% {opacity: 0;}
+    100% {opacity: 1;}
+}
+
+.PlayerBattleground {
+    text-align: left;
+    grid-column: 1 / span 2;
+    grid-row: 1;
+    display: block;
+    opacity: 1;
+    animation-name: PlayerBattlegroundAppears;
+    animation-duration: 1.2s;
+
+    position: absolute; /* PlayerBattleground must cover the EnemyBattleground */
+    top: 0;
+    left: 0;
+    z-index: 5;
+}
+
+@keyframes PlayerBattlegroundHides {
+    0% {opacity: 1;}
+    85% {opacity: 1;}
+    100% {opacity: 0;}
+}
+
+.PlayerBattleground.hidden {
+    opacity: 0;
+    z-index: 1;
+    animation-name: PlayerBattlegroundHides;
+    animation-duration: 1.2s;
+}
+
+.PlayerBattleground .grid {
+    border: 1px solid #333;
+    background: #d8f6ff;
+}
+.PlayerBattleground .grid .cell {
+    fill: transparent;
+    stroke-width: 1px;
+    stroke: #7bafdc;
+    cursor: pointer;
+    z-index: 9;
+}
+.PlayerBattleground.hidden .grid .cell {
+    cursor: default;
+}
+
+
+.PlayerBattleground .grid .cell:hover {
+    fill: rgb(50,50,50);
+    opacity: 0.25;
+}
+
+@keyframes MissAppears {
+    from {fill: #d8f6ff;}
+    to {fill: #ffffff;}
+}
+.PlayerBattleground .grid .cell.miss {
+    cursor: default;
+    fill: #ffffff;
+    animation-name: MissAppears;
+    animation-duration: 0.3s;
+}
+.PlayerBattleground .grid .cell.miss:hover {
+    opacity: 1;
+}
+
+@keyframes HitAppears {
+    from {fill: #d8f6ff;}
+    to {fill: #ffb2b2;}
+}
+.PlayerBattleground .grid .cell.hit {
+    cursor: default;
+    fill: #ffb2b2;
+    animation-name: HitAppears;
+    animation-duration: 0.3s;
+}
+.PlayerBattleground .grid .cell.hit:hover {
+    opacity: 1;
+}
+
+@keyframes ShipAppears {
+    from {opacity: 0.5;}
+    to   {opacity: 1;}
+}
+
+.PlayerBattleground .grid .ship-frame {
+    fill: #ffb2b2;
+    stroke-width: 2px;
+    stroke: #fd4545;
+    z-index: 99;
+    animation-name: ShipAppears;
+    animation-duration: 0.3s;
+}

@@ -1,0 +1,83 @@
+@keyframes EnemyBattlegroundAppears {
+    0%   {opacity: 0;}
+    85%  {opacity: 0;}
+    100% {opacity: 1;}
+}
+
+.EnemyBattleground {
+    text-align: left;
+    grid-column: 1 / span 2;
+    grid-row: 1;
+    display: block;
+    opacity: 1;
+    z-index: 3;
+    pointer-events: none;
+    user-select: none;
+    animation-name: EnemyBattlegroundAppears;
+    animation-duration: 1.2s;
+}
+
+@keyframes EnemyBattlegroundHides {
+    0%   {opacity: 1;}
+    85%  {opacity: 1;}
+    100% {opacity: 0;}
+}
+
+.EnemyBattleground.hidden {
+    opacity: 0;
+    animation-name: EnemyBattlegroundHides;
+    animation-duration: 1.2s;
+}
+
+.EnemyBattleground .grid {
+    border: 1px solid #333;
+    background: #ffffff;
+}
+.EnemyBattleground .grid .cell {
+    fill: #d8f6ff;
+    stroke-width: 1px;
+    stroke: #7bafdc;
+    cursor: default;
+    z-index: 9;
+}
+
+@keyframes EnemyMissAppears {
+    0%   {fill: #d8f6ff;}
+    40%  {fill: #fff8b2}
+    100% {fill: #ffffff;}
+}
+.EnemyBattleground .grid .cell.miss {
+    fill: #ffffff;
+    animation-name: EnemyMissAppears;
+    animation-duration: 0.5s;
+}
+
+@keyframes EnemyHitAppears {
+    0%   {fill: #d8f6ff;}
+    40%  {fill: #fff8b2}
+    100% {fill: #ffb2b2;}
+}
+.EnemyBattleground .grid .cell.hit {
+    fill: #ffb2b2;
+    animation-name: EnemyHitAppears;
+    animation-duration: 0.5s;
+}
+
+.EnemyBattleground .ship-frame {
+    fill: transparent;
+    stroke-width: 2px;
+    stroke: #4664fc;
+    z-index: 99;
+    cursor: default;
+}
+.EnemyBattleground .ship-frame.invalid {
+    stroke: #fd4545;
+}
+.EnemyBattleground .ship-frame.lost {
+    fill: #ffb2b2;
+    stroke: #fd4545;
+}
+
+@media screen and (max-width: 992px) {
+
+}

@@ -9,7 +9,7 @@ import DotShape from './ships/DotShape';
 import Ishape from './ships/Ishape';
 import Lshape from './ships/Lshape';
 
-// size of battleground
+// size of battleground: indexes from 0 to the numbers (not included)
 export const maxX = 10,
              maxY = 10;
 
@@ -31,6 +31,15 @@ export const sign = {
     hit:   7
 }
 
+// Return shape function by ship name
+function getShipShape (ship) {
+    switch (ship.name) {
+        case Lshape().name:   return Lshape;
+        case Ishape().name:   return Ishape;
+        case DotShape().name: return DotShape;
+        default:              return undefined;
+    }
+}
 
 /* Battle ships and matrix generation */
 
@@ -42,6 +51,7 @@ function generateShip(shape) {
         decks:  ship.decks || 0,
         matrix: ship.variants[ variant ],
         frame:  ship.frames[ variant ],
+        v:      variant,
         hits:   0
     }
 }
@@ -80,6 +90,15 @@ function setShipRandomXY (ship) {
     return ship;
 }
 
+/**
+ * Return same matrix with double touch sign replaced to a single touch sign.
+ * @param mtrx {Array} - source matrix
+ * @returns {Array} - the same matrix with replaced values
+ */
+function removeDoubleTouchSign (mtrx) {
+    return matrix.replaceValues(mtrx, sign.touch + sign.touch, sign.touch);
+}
+
 
 /**
  * Generate initial state of battle
@@ -96,17 +115,19 @@ export function generateBattleMatrixAndShips () {
         // generate ships of the shape
         for(let j=0; j<cnt; j++) {
             let ship = generateShip(shape);
+            ship.id = ships.length;
             ships.push(ship);
 
             // generate random x, y
             // then apply ship.matrix on battle ground
             // until the coordinates suite all the rules
+            let bg_new = [];
             do {
                 setShipRandomXY(ship);
-                var bg_new = matrix.apply(bg, ship.matrix, ship.x, ship.y);
+                bg_new = matrix.apply(bg, ship.matrix, ship.x, ship.y);
             } while (!validPlacement(bg_new, ships));
 
-            bg = bg_new;
+            bg = removeDoubleTouchSign(bg_new);
         }
     }
 
@@ -134,21 +155,38 @@ export function findShip (ships, x, y) {
 
 /**
  * Check point on matrix provided - if it's hit or miss.
- * Return new copy of the matrix with a mark checked, and a boolean result of cheque.
- * @param mtrx {Array} - matrix to check
+ * In case it's hit, increment hits count of the appropriate ship from the ships provided.
+ * Return new copy of the matrix and ships, and a boolean result of cheque.
+ * @param mtrx {Array}  - matrix to check
+ * @param ships {Array} - array of ships
  * @param x {Integer}  - x coordinate of the point
  * @param y {Integer}  - y coordinate of the point
  * @returns {{matrix: Array, hit: boolean}}
  */
-export function checkPoint (mtrx, x, y) {
+export function checkPoint (mtrx, ships, x, y) {
     let bg = matrix.clone(mtrx),
+        sh = utils.cloneObjects(ships),
         hit = (mtrx[y][x] === sign.deck);
 
     bg[y][x] = (hit ? sign.hit : sign.miss);
+    if (hit) findShip(sh, x, y).hits++;
     return {
         matrix: bg,
-        hit: hit
+        ships:  sh,
+        hit:    hit
     }
+}
+
+/**
+ * Return true if point has been checked on the matrix, that means it is marked as hit or miss.
+ * @param mtrx
+ * @param x {Integer}  - x coordinate of the point
+ * @param y {Integer}  - y coordinate of the point
+ * @returns {boolean}
+ */
+export function isPointChecked (mtrx, x, y) {
+    let point = mtrx[y][x];
+    return (point === sign.miss || point === sign.hit);
 }
 
 /**
@@ -156,6 +194,101 @@ export function checkPoint (mtrx, x, y) {
  * @param ships {Array} - array of ships of the battle
  * @returns {boolean} - return true if the game is finished
  */
-export function isGameWin (ships) {
+export function isGameFinished (ships) {
     return !ships.some((ship) => ship.decks > ship.hits);
+}
+
+
+/**
+ * Return matrix built by ships provided
+ * @param ships {Array} - array of ships of the battle
+ * @returns {Array}
+ */
+export function generateMatrixByShips (ships) {
+    let mtrx = matrix.generate(maxX, maxY);
+    ships.forEach(ship => {
+        mtrx = removeDoubleTouchSign(
+            matrix.apply(mtrx, ship.matrix, ship.x, ship.y)
+        );
+    });
+    return mtrx;
+}
+
+
+/**
+ * Check position of all ships provided is valid.
+ * @param ships {Array} - array of ships of the battle
+ * @returns {boolean} - return true if position is correct
+ */
+export function validShipPlacement (ships) {
+    return validPlacement(generateMatrixByShips(ships), ships);
+}
+
+
+/**
+ * Return ship object updated with the next variant of the ship shape.
+ * @param ship {Object} - source ship object
+ * @returns {Object}
+ */
+export function rotateShip (ship) {
+    let sh = getShipShape(ship)(),
+        vn = (ship.v + 1 < sh.variants.length) ? ship.v + 1 : 0;
+
+    ship.v = vn;
+    ship.matrix = sh.variants[vn];
+    ship.frame  = sh.frames[vn];
+    return ship;
+}
+
+/**
+ * AI of the game. Return random x, y coordinates of an enemy shot.
+ * Params of the method are player's matrix and ships that may contain private info. The method doesn't take into
+ * account position of ships that are not known to him
+ * @param mtrx  {Array} - array of player's matrix
+ * @param ships {Array} - array of player's ships
+ * @returns {Object {x, y}} - coordinates of the shot
+ */
+export function calcEnemyShot (mtrx, ships) {
+
+    let firedShips  = ships.filter(ship => ship.decks === ship.hits),
+        knownMatrix = generateMatrixByShips (firedShips);
+
+    const isPointValid = (x, y) => {
+        return x >= 0 && x < maxX && y >= 0 && y < maxY
+        && !isPointChecked(mtrx, x, y)          // do not shoot to checked cell
+        && knownMatrix[y][x] !== sign.touch;    // do not shoot near known ship
+    }
+
+    let nonFinishedShipsExist = ships.filter(ship => ship.hits > 0 && ship.decks > ship.hits).length > 0;
+    if (nonFinishedShipsExist) {
+        // smart algorithm of shooting around non-finished ships
+        let points = [];
+        const addPoint = (x, y) => {
+            if (isPointValid(x, y))
+                points.push({x, y});
+        }
+
+        for (let i=0; i<mtrx.length; i++) {
+            for (let j = 0; j < mtrx[i].length; j++) {
+                if (mtrx[i][j] === sign.hit && knownMatrix[i][j] !== sign.deck) {
+                    // non-finished ship found, add 4 points around to a list of likely points
+                    addPoint(j   , i -1);
+                    addPoint(j +1, i   );
+                    addPoint(j   , i +1);
+                    addPoint(j -1, i   );
+                }
+            }
+        }
+
+        return points[ utils.getRandomInt(0, points.length) ];
+    }
+
+    // silly algorithm of shooting at a random point
+    let x, y;
+    do {
+        x = utils.getRandomInt(0, maxX);
+        y = utils.getRandomInt(0, maxY);
+    } while (!isPointValid(x, y));
+
+    return {x, y}
 }
