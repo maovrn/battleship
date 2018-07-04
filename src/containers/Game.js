@@ -9,7 +9,7 @@ import * as actions from "../store/actions";
 import './Game.css';
 
 import Welcome from '../components/Welcome';
-import WinScreen from '../components/WinScreen';
+import GameOverScreen from '../components/GameOverScreen';
 import ShipSetup from './ShipSetup';
 import PlayerBattleground from './PlayerBattleground';
 import EnemyBattleground from './EnemyBattleground';
@@ -40,19 +40,15 @@ class Game extends Component {
                         {this.props.screen === 'setup' && (
                             <ShipSetup/>
                         )}
-                        {this.props.screen !== 'setup' && (
+                        {this.props.screen === 'play' && (
                             <div className='battle-container'>
                                 <EnemyBattleground/>
                                 <PlayerBattleground/>
                             </div>
                         )}
                     </div>
-                    {this.props.screen === 'win' && (
-                        <WinScreen onStart={this.onStart} shots={this.props.shots}/>
-                    )}
-                    {this.props.screen === 'lost' && (
-                        /* TODO replace WinScreen to LostScreen */
-                        <WinScreen onStart={this.onStart} shots={this.props.shots}/>
+                    {this.props.result && (
+                        <GameOverScreen onStart={this.onStart} result={this.props.result} shots={this.props.shots}/>
                     )}
                 </div>
             )
@@ -63,22 +59,24 @@ class Game extends Component {
 
 export default connect(state => {
     let screen = state.gameState || 'welcome',
+        result = '',
         shots  = 0;
 
     // check condition of game win or lost
     if (state.gameState === 'play') {
         if (game.isGameFinished(state.enemy.ships)) {
-            screen = 'win';
+            result = 'win';
             shots  = state.player.shots;
         }
         if (game.isGameFinished(state.player.ships)) {
-            screen = 'lost';
+            result = 'lost';
             shots  = state.enemy.shots;
         }
     }
 
     return {
         screen: screen,
+        result: result,
         shots:  shots
     }
 })(Game);
