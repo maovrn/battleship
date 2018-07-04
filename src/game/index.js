@@ -9,7 +9,7 @@ import DotShape from './ships/DotShape';
 import Ishape from './ships/Ishape';
 import Lshape from './ships/Lshape';
 
-// size of battleground
+// size of battleground: indexes from 0 to the numbers (not included)
 export const maxX = 10,
              maxY = 10;
 
@@ -240,16 +240,55 @@ export function rotateShip (ship) {
     return ship;
 }
 
-
+/**
+ * AI of the game. Return random x, y coordinates of an enemy shot.
+ * Params of the method are player's matrix and ships that may contain private info. The method doesn't take into
+ * account position of ships that are not known to him
+ * @param mtrx  {Array} - array of player's matrix
+ * @param ships {Array} - array of player's ships
+ * @returns {Object {x, y}} - coordinates of the shot
+ */
 export function calcEnemyShot (mtrx, ships) {
-    let x, y, ok;
 
+    let firedShips  = ships.filter(ship => ship.decks === ship.hits),
+        knownMatrix = generateMatrixByShips (firedShips);
+
+    const isPointValid = (x, y) => {
+        return x >= 0 && x < maxX && y >= 0 && y < maxY
+        && !isPointChecked(mtrx, x, y)          // do not shoot to checked cell
+        && knownMatrix[y][x] !== sign.touch;    // do not shoot near known ship
+    }
+
+    let nonFinishedShipsExist = ships.filter(ship => ship.hits > 0 && ship.decks > ship.hits).length > 0;
+    if (nonFinishedShipsExist) {
+        // smart algorithm of shooting around non-finished ships
+        let points = [];
+        const addPoint = (x, y) => {
+            if (isPointValid(x, y))
+                points.push({x, y});
+        }
+
+        for (let i=0; i<mtrx.length; i++) {
+            for (let j = 0; j < mtrx[i].length; j++) {
+                if (mtrx[i][j] === sign.hit && knownMatrix[i][j] !== sign.deck) {
+                    // non-finished ship found, add 4 points around to a list of likely points
+                    addPoint(j   , i -1);
+                    addPoint(j +1, i   );
+                    addPoint(j   , i +1);
+                    addPoint(j -1, i   );
+                }
+            }
+        }
+
+        return points[ utils.getRandomInt(0, points.length) ];
+    }
+
+    // silly algorithm of shooting at a random point
+    let x, y;
     do {
         x = utils.getRandomInt(0, maxX);
         y = utils.getRandomInt(0, maxY);
-
-        ok = !isPointChecked(mtrx, x, y);
-    } while (!ok);
+    } while (!isPointValid(x, y));
 
     return {x, y}
 }

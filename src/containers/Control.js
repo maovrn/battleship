@@ -113,7 +113,7 @@ export default connect(state => {
         turn:         turn,
         playDisabled: screen === 'setup' && calcPlayDisabled(state.player.ships),
         shots:        screen === 'play'  && (turn ? state.player.shots : state.enemy.shots),
-        hits:         screen === 'play'  && (turn ? calcHits(state.enemy.ships)   : calcHits(state.player.ships)),
-        wanted:       screen === 'play'  && (turn ? calcWanted(state.enemy.ships) : calcWanted(state.player.ships))
+        hits:         screen === 'play'  && calcHits(turn ? state.enemy.ships : state.player.ships),
+        wanted:       screen === 'play'  && calcWanted(turn ? state.enemy.ships : state.player.ships)
     }
 })(Control);
