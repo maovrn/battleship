@@ -19,6 +19,8 @@ class Welcome extends Component {
                     <p>There is a square 10 by 10 cells battleground which hides one L shaped, one I shaped and two dot shaped battle ships.
                        Initial they cannot overlap and must not touch one another so there is at least a single cell between them.
                        Any battle ship rotation and position are random.
+                       You play against a computer opponent who is trying to find your ships while you're looking for him.
+                       You shoot one by one, the turn passes to the opponent after a miss.
                        Good luck in the search!
                     </p>
                     <button className="btn btn-default" onClick={this.props.onStart}>Start game</button>

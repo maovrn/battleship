@@ -1,10 +1,10 @@
 # Battle ship game
 
+Now the project is a complete game of a sea battle which includes the stage of placing the player's ships and fighting against the computer opponent.
 
+## Initial project requirements
 
-## Project requirements
-
-Preferably develop following task in React with TypeScript. Make sure code is posted in github or bitbucket public repo.
+Preferably develop following task in React with TypeScript. Make sure code is posted in GitHub or Bitbucket public repo.
 
 1) Let's create an onscreen grid of cells aligned within a square 10 by 10.
 
@@ -24,9 +24,9 @@ Each ship must have outline color defining boundaries of a ship.
 
 ## Implementation
 
-The task is completed in React + Redux with vanilla JS ES6. 
+The task is completed in React + Redux on JS ES6. 
 
-
+The game has been tested in almost all modern browsers including mobile browsers.
 
 ## [Demo](https://battleship-453e1.firebaseapp.com/)
 
