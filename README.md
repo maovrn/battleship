@@ -28,6 +28,12 @@ The task is completed in React + Redux on JS ES6.
 
 The game has been tested in almost all modern browsers including mobile browsers.
 
+## License
+
+MIT License
+
+Copyright (c) 2018 DataArt
+
 ## [Demo](https://battleship-453e1.firebaseapp.com/)
 
 UI example:
